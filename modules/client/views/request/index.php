@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'address_client_room',
             //'comment_request:ntext',
             //'id_metering',
-            //'date_metering_plan',
+            'date_metering_plan',
             //'date_metering',
             //'id_delivery',
             //'price_delivery',
