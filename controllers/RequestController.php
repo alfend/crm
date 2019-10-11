@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\client\controllers;
+namespace app\controllers;
 
 use Yii;
 use app\models\Request;

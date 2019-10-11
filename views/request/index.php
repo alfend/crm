@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\RequestSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Requests';
+$this->title = 'Заказы на замер';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="request-index">
