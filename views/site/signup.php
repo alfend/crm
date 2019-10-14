@@ -15,6 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php
                 $city= new City();
                 $city_name=$city->getFindCity($_SERVER['REMOTE_ADDR']);
+             //   print_r(ArrayHelper::map(City::find()->all(), 'id', 'name'));
             ?>
             <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
             <?= $form->field($model, 'date_create')->label(false)->hiddenInput(['value' => (new \DateTime('now', new \DateTimeZone('Europe/Moscow')))->format('Y-m-d H:i:s')]) ?>
@@ -26,8 +27,8 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= $form->field($model, 'lastname')->textInput(['maxlength' => true])->label('Фамилия:') ?>
             <?= $form->field($model, 'firstname')->textInput(['maxlength' => true])->label('Имя:') ?>
             <?= $form->field($model, 'secondname')->textInput(['maxlength' => true])->label('Отчество:') ?>
-            <?= $form->field($model, 'birthday')->textInput()->label('Дата рождения:') ?>
-            <?= $form->field($model, 'id_city')->textInput(['value' => $city_name]) ?>
+            <?= $form->field($model, 'birthday')->textInput(); ?>
+            <?= $form->field($model, 'id_city')->textInput();//DropDownList(ArrayHelper::map(City::find()->all(), 'id', 'name')); ?>
             <?= $form->field($model, 'address')->textInput(['maxlength' => true])->label('Адрес:') ?>
             <?= $form->field($model, 'status')->label(false)->hiddenInput(['value' => '0'])?>
             <?php
