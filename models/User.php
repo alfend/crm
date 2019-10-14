@@ -124,6 +124,11 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
         return $this->id;
     }
 
+    public function getCity($id)
+    {
+        return static::findOne(['id' => $id]); //, 'status' => self::STATUS_ACTIVE]
+    }
+
 
     /**
      * @inheritdoc

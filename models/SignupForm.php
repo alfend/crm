@@ -33,7 +33,6 @@ class SignupForm extends Model
             [['id_city', 'status'], 'integer'],
             [['lastname', 'firstname', 'secondname', 'tel'], 'string', 'max' => 255],
             [['address', 'email', 'password'], 'string', 'max' => 255],
-
             ['email', 'email', 'message' => 'Нужно ввести email.'],
             ['email', 'trim'],
             ['email', 'unique', 'targetClass' => '\app\models\User', 'message' => 'Этот email уже занят.'],

@@ -78,16 +78,16 @@ class Request extends \yii\db\ActiveRecord
             'id_delivery' => 'Id Delivery',
             'price_delivery' => 'Price Delivery',
             'id_mounting' => 'Id Mounting',
-            'price_mounting' => 'Price Mounting',
+            'price_mounting' => 'Стоимость монтажа',
             'type_price' => 'Type Price',
             'id_company' => 'Id Company',
-            'price_company' => 'Price Company',
+            'price_company' => 'Стоимость изготовления',
             'price_request' => 'Price Request',
             'deposit_transfer' => 'Deposit Transfer',
             'deposit_cash' => 'Deposit Cash',
             'type_deposit' => 'Type Deposit',
-            'status_price' => 'Status Price',
-            'status_request' => 'Status Request',
+            'status_price' => 'Статус оплаты',
+            'status_request' => 'Статус заказа',
         ];
     }
 }

@@ -45,7 +45,7 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
                 if (Yii::$app->getUser()->login($user)) {
-                    return $this->goHome();
+                    return $this->redirect(['/client/request']);
                 }
             }
         }
@@ -114,7 +114,7 @@ class SiteController extends Controller
             //print_r(Yii::$app->user); die;
             //Yii::$app->user->id=Yii::$app->user->at
            // return $this->goBack();
-            return $this->redirect(['/request']);
+            return $this->redirect(['/client/request']);
         }
 
         $model->password = '';
