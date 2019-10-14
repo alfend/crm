@@ -12,7 +12,7 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'id_client')->label(false)->hiddenInput(['value' => '1']) ?>
+    <?= $form->field($model, 'id_client')->label(false)->hiddenInput(['value' => Yii::$app->user->getId()]) ?>
 
     <?= $form->field($model, 'date_create')->label(false)->hiddenInput(['value' => (new \DateTime('now', new \DateTimeZone('Europe/Moscow')))->format('Y-m-d H:i:s')]) ?>
 

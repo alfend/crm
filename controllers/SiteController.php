@@ -2,25 +2,18 @@
 
 namespace app\controllers;
 
-use app\models\Signup;
+
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\ContactForm;
+use app\models\LoginForm;
+use app\models\SignupForm;
 
 class SiteController extends Controller
 {
-    //регистрация
-    public function actionSignup()
-    {
-        $model = new Signup();
-        return $this->render('signup', ['model'=>$model]);
-    }
-    /**
-     * {@inheritdoc}
-     */
     public function behaviors()
     {
         return [
@@ -44,6 +37,23 @@ class SiteController extends Controller
         ];
     }
 
+    //регистрация
+    public function actionSignup()
+    {
+        $model = new SignupForm();
+
+        if ($model->load(Yii::$app->request->post())) {
+            if ($user = $model->signup()) {
+                if (Yii::$app->getUser()->login($user)) {
+                    return $this->goHome();
+                }
+            }
+        }
+
+        return $this->render('signup', [
+            'model' => $model,
+        ]);
+    }
     /**
      * {@inheritdoc}
      */
@@ -58,11 +68,6 @@ class SiteController extends Controller
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
-    }
-
-    public function actionsIndex()
-    {
-        return $this->render('index');
     }
 
     /**
@@ -92,4 +97,37 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+
+    public function actionIndex()
+    {
+        return $this->render('index');
+    }
+
+    public function actionLogin()
+    {
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        $model = new LoginForm();
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            //print_r(Yii::$app->user); die;
+            //Yii::$app->user->id=Yii::$app->user->at
+           // return $this->goBack();
+            return $this->redirect(['/request']);
+        }
+
+        $model->password = '';
+        return $this->render('login', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionLogout()
+    {
+        Yii::$app->user->logout();
+
+        return $this->goHome();
+    }
+
 }
