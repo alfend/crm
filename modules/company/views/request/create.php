@@ -5,12 +5,11 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Request */
 
-$this->title = 'Изменение заказа: №' . $model->id;
+$this->title = 'Create Request';
 $this->params['breadcrumbs'][] = ['label' => 'Requests', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['index', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="request-update">
+<div class="request-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

@@ -11,6 +11,9 @@ use yii\filters\VerbFilter;
 use app\models\ContactForm;
 use app\models\LoginForm;
 use app\models\SignupForm;
+use app\models\SignupFormCompany;
+use app\models\User;
+
 
 class SiteController extends Controller
 {
@@ -37,13 +40,13 @@ class SiteController extends Controller
         ];
     }
 
-    //регистрация
+    //регистрация клиента
     public function actionSignup()
     {
         $model = new SignupForm();
 
         if ($model->load(Yii::$app->request->post())) {
-            if ($user = $model->signup()) {
+            if ($user = $model->signup(User::TYPE_CLIENT)) {
                 if (Yii::$app->getUser()->login($user)) {
                     return $this->redirect(['/client/request']);
                 }
@@ -54,6 +57,88 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+
+    /*
+     *     const TYPE_METERING = 2; //metering - замерщик
+    const TYPE_DELEVERY = 3; //delivery - доставщик
+    const TYPE_MOUNTING = 4; //mounting - монтажник
+    const TYPE_COMPANY = 5; //company - изготовитель
+     */
+
+    //регистрация замерщика
+    public function actionSignupMetering()
+    {
+        $model = new SignupForm();
+
+        if ($model->load(Yii::$app->request->post())) {
+            if ($user = $model->signup(User::TYPE_METERING)) {
+                if (Yii::$app->getUser()->login($user)) {
+                    return $this->redirect(['/metering/request']);
+                }
+            }
+        }
+
+        return $this->render('signup', [
+            'model' => $model,
+        ]);
+    }
+
+    //регистрация Курьера
+    public function actionSignupDelivery()
+    {
+        $model = new SignupForm();
+
+        if ($model->load(Yii::$app->request->post())) {
+            if ($user = $model->signup(User::TYPE_DELEVERY)) {
+                if (Yii::$app->getUser()->login($user)) {
+                    return $this->redirect(['/delivery/request']);
+                }
+            }
+        }
+
+        return $this->render('signup', [
+            'model' => $model,
+        ]);
+    }
+
+    //регистрация Монтажника
+    public function actionSignupMounting()
+    {
+        $model = new SignupForm();
+
+        if ($model->load(Yii::$app->request->post())) {
+            if ($user = $model->signup(User::TYPE_MOUNTING)) {
+                if (Yii::$app->getUser()->login($user)) {
+                    return $this->redirect(['/mounting/request']);
+                }
+            }
+        }
+
+        return $this->render('signup', [
+            'model' => $model,
+        ]);
+    }
+
+    //регистрация Компании
+    public function actionSignupCompany()
+    {
+        $model = new SignupFormCompany();
+
+        if ($model->load(Yii::$app->request->post())) {
+            if ($user = $model->signupCompany(User::TYPE_COMPANY)) {
+                if (Yii::$app->getUser()->login($user)) {
+                    return $this->redirect(['/company/request']);
+                }
+            }
+        }
+
+        return $this->render('signupCompany', [
+            'model' => $model,
+        ]);
+    }
+
+
+
     /**
      * {@inheritdoc}
      */

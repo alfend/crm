@@ -60,6 +60,18 @@ $config = [
         'client' => [
             'class' => 'app\modules\client\Module',
         ],
+        'metering' => [
+            'class' => 'app\modules\metering\Module',
+        ],
+        'delivery' => [
+            'class' => 'app\modules\delivery\Module',
+        ],
+        'mounting' => [
+            'class' => 'app\modules\mounting\Module',
+        ],
+        'company' => [
+            'class' => 'app\modules\company\Module',
+        ],
 
     ],
     'params' => $params,

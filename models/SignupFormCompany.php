@@ -11,7 +11,7 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 
-class SignupForm extends Model
+class SignupFormCompany extends Model
 {
 
     public $email;
@@ -20,19 +20,22 @@ class SignupForm extends Model
     public $lastname;
     public $firstname;
     public $secondname;
+    public $company;
     public $date_create;
     public $birthday;
     public $address;
+    public $address_delivery;
     public $id_city;
     public $status;
+
 
     public function rules()
     {
         return [
-            [['date_create', 'id_city', 'lastname', 'firstname', 'email', 'tel', 'password'], 'required', 'message' => 'Обязательное поле.'],
+            [['date_create', 'company','id_city',  'email', 'tel', 'password'], 'required', 'message' => 'Обязательное поле.'],
             [['date_create', 'birthday'], 'safe'],
             [['id_city', 'status'], 'integer'],
-            [['lastname', 'firstname', 'secondname', 'tel'], 'string', 'max' => 255],
+            [['company', 'tel'], 'string', 'max' => 255], //'lastname', 'firstname', 'secondname'
             [['address', 'email', 'password'], 'string', 'max' => 255],
             ['email', 'email', 'message' => 'Нужно ввести email.'],
             ['email', 'trim'],
@@ -46,7 +49,7 @@ class SignupForm extends Model
      *
      * @return User|null the saved model or null if saving fails
      */
-    public function signup($type)
+    public function signupCompany($type)
     {
 
         if (!$this->validate()) {return null;};
@@ -56,12 +59,11 @@ class SignupForm extends Model
         $user->setPassword($this->password);
          $user->generateAuthKey();
         $user->tel = $this->tel;
-        $user->lastname = $this->lastname;
-        $user->firstname = $this->firstname;
-        $user->secondname = $this->secondname;
+        $user->company = $this->company;
         $user->date_create = $this->date_create;
         $user->birthday = $this->birthday;
         $user->address = $this->address;
+        $user->address_delivery = $this->address_delivery;
         $user->id_city = $this->id_city;
         $user->status = $this->status;
         $user->type = $type;

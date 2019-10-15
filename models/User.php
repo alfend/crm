@@ -8,11 +8,20 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
-class User extends ActiveRecord implements \yii\web\IdentityInterface
+class User extends ActiveRecord implements IdentityInterface
 {
 
-    const STATUS_DELETED = 0;
+    const STATUS_DELETED = -1;
+    const STATUS_REGISTERED = 0;
     const STATUS_ACTIVE = 1;
+    const STATUS_ALLOWED = 2;
+
+    const TYPE_CLIENT = 1; // client - клиент
+    const TYPE_METERING = 2; //metering - замерщик
+    const TYPE_DELEVERY = 3; //delivery - доставщик
+    const TYPE_MOUNTING = 4; //mounting - монтажник
+    const TYPE_COMPANY = 5; //company - изготовитель
+
 
     public static function tableName()
     {
@@ -37,7 +46,7 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
     {
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_REGISTERED]],
         ]
         ;
     }
@@ -84,33 +93,8 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
     {
         return static::findOne(['username' => $username]);
     }
-/*
-    public static function findByUsername($username)
-    {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
-        }
 
-        return null;
-    }
-
-
-
-    /*
-    public static function findByEmail($email)
-    {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['email'], $email) === 0) {
-                return new static($user);
-            }
-        }
-
-        return null;
-    }
- */
-
+    //поиск по email
     public static function findByEmail($email)
     {
         return static::findOne(['email' => $email]); //, 'status' => self::STATUS_ACTIVE]
@@ -124,6 +108,7 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
         return $this->id;
     }
 
+    //вывод id города в пользователе
     public function getCity($id)
     {
         return static::findOne(['id' => $id]); //, 'status' => self::STATUS_ACTIVE]

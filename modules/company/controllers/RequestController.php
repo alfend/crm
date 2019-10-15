@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\client\controllers;
+namespace app\modules\company\controllers;
 
 use Yii;
 use app\models\Request;
@@ -67,7 +67,7 @@ class RequestController extends Controller
         $model = new Request();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
@@ -87,7 +87,7 @@ class RequestController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
@@ -102,12 +102,9 @@ class RequestController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    //удаляем переводя статус в -1
     public function actionDelete($id)
     {
-        $model = $this->findModel($id);
-        $model->status_request=-1;
-        $model->save();
+        $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }
@@ -127,5 +124,4 @@ class RequestController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
-
 }

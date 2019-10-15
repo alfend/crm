@@ -50,9 +50,14 @@ class City extends \yii\db\ActiveRecord
         return $this->id;
     }
 
-    public function getNameCity($id)
+    public function getCityByName($name)
     {
-        return static::findOne(['id' => $id])->name; //, 'status' => self::STATUS_ACTIVE]
+        return static::findOne(['name' => $name]); //, 'status' => self::STATUS_ACTIVE]
+    }
+
+    public function getCityById($id)
+    {
+        return static::findOne(['id' => $id]); //, 'status' => self::STATUS_ACTIVE]
     }
 
     public function getAllCity()
@@ -60,7 +65,7 @@ class City extends \yii\db\ActiveRecord
         return static::find('id','name')->all(); //, 'status' => self::STATUS_ACTIVE]
     }
 
-    public function getFindCity($ip)
+    public function getCityByIp($ip)
     {
         $postData = "
             <ipquery>
