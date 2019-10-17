@@ -10,6 +10,13 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use yii\widgets\Menu;
+use app\models\User;
+
+//Если не монтажник перенаправляем на главную
+if(!(User::getRole(Yii::$app->user->getId())==User::TYPE_MOUNTING)){
+    Yii::$app->getResponse()->redirect(Yii::$app->getUser()->loginUrl);
+}
+
 
 AppAsset::register($this);
 ?>
@@ -79,14 +86,13 @@ AppAsset::register($this);
                 <?php
                 echo Menu::widget([
                     'items' => [
-                        ['label' => 'Мои заказы', 'url' => ['/client/request/']],
-                        ['label' => 'Запись на замер', 'url' => ['/client/request/create']],
-                        ['label' => 'Калькулятор', 'url' => ['#']],
+                        ['label' => 'Новые заказы', 'url' => ['/mounting/request/create']],
+                        ['label' => 'Мои заказы', 'url' => ['/mounting/request/']],
+                        ['label' => 'Мои отклики', 'url' => ['#']],
                         ['label' => 'Мои данные', 'url' => ['#']],
                         ['label' => 'Уведомления', 'url' => ['#']],
                         ['label' => 'Документы', 'url' => ['#']],
                         ['label' => 'Баланс', 'url' => ['#']],
-
                     ],
                 ]);
                 ?>

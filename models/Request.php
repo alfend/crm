@@ -36,8 +36,17 @@ class Request extends \yii\db\ActiveRecord
 {
 
     const STATUS_DELETED = -1;
-    const STATUS_CREATE = 0;
-    const STATUS_ACTIVE = 1;
+    const STATUS_CREATE = 0;// BEFORE _AFTER
+    const STATUS_METERING_BEFORE = 2;
+    const STATUS_METERING_AFTER = 3;
+    const STATUS_COMPANY_BEFORE_AFTER = 4;
+    const STATUS_COMPANY_AFTER = 5;
+    const STATUS_DELEVERY_BEFORE = 6;
+    const STATUS_DELEVERY_AFTER_ = 7;
+    const STATUS_MOUNTING_BEFORE = 8;
+    const STATUS_MOUNTING_AFTER = 9;
+    const STATUS_FINISH = 10;
+
     /**
      * {@inheritdoc}
      */
@@ -102,6 +111,12 @@ class Request extends \yii\db\ActiveRecord
     public function getRequestByClientAndStatus($id_client, $status)
     {
         return static::find()->where(['id_client' => $id_client, 'status_request' => $status])->asArray()->all(); //, 'status' => self::STATUS_ACTIVE]
+    }
+
+    //все заказы на отклик
+    public function getRequestByStatus($id_city,$status)
+    {
+        return static::find()->where(['id_city' => $id_city, 'status_request' => $status])->asArray()->all(); //, 'status' => self::STATUS_ACTIVE]
     }
 
 }

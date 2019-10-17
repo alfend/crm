@@ -96,7 +96,7 @@ use kartik\datetime\DateTimePicker;
 
     <?= $form->field($model, 'status_price')->textInput() */ ?>
 
-    <?= $form->field($model, 'status_request')->label(false)->hiddenInput(['value' => '0'])   ?>
+    <?= $form->field($model, 'status_request')->label(false)->hiddenInput(['value' => '2'])   ?>
 
     <div class="form-group">
         <?= Html::submitButton('Заказать', ['class' => 'btn btn-success']) ?>

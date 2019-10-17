@@ -3,6 +3,8 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
+namespace app\components;
+
 use app\widgets\Alert;
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
@@ -10,8 +12,17 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use yii\widgets\Menu;
+use app\models\User;
+use Yii;
+
+//Если не клиент перенаправляем на главную
+if(!(User::getRole(Yii::$app->user->getId())==User::TYPE_CLIENT)){
+    Yii::$app->getResponse()->redirect(Yii::$app->getUser()->loginUrl);
+}
 
 AppAsset::register($this);
+
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>

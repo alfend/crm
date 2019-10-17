@@ -18,7 +18,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     const TYPE_CLIENT = 1; // client - клиент
     const TYPE_METERING = 2; //metering - замерщик
-    const TYPE_DELEVERY = 3; //delivery - доставщик
+    const TYPE_DELIVERY = 3; //delivery - доставщик
     const TYPE_MOUNTING = 4; //mounting - монтажник
     const TYPE_COMPANY = 5; //company - изготовитель
 
@@ -46,7 +46,8 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_REGISTERED]],
+            ['status', 'in', 'range' => [self::STATUS_DELETED,self::STATUS_REGISTERED,self::STATUS_ACTIVE, self::STATUS_ALLOWED]],
+
         ]
         ;
     }
@@ -98,6 +99,12 @@ class User extends ActiveRecord implements IdentityInterface
     public static function findByEmail($email)
     {
         return static::findOne(['email' => $email]); //, 'status' => self::STATUS_ACTIVE]
+    }
+
+    //получение роли
+    public static function getRole($id)
+    {
+        return static::findOne(['id' => $id])->type;
     }
 
     /**
