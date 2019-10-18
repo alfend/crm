@@ -13,7 +13,7 @@ use yii\widgets\Menu;
 use app\models\User;
 
 //Если не курьер перенаправляем на главную
-if(!(User::getRole(Yii::$app->user->getId())==User::TYPE_DELEVERY)){
+if(!(User::getRole(Yii::$app->user->getId())==User::TYPE_DELIVERY)){
     Yii::$app->getResponse()->redirect(Yii::$app->getUser()->loginUrl);
 }
 
