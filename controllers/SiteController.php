@@ -73,7 +73,7 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup(User::TYPE_METERING)) {
                 if (Yii::$app->getUser()->login($user)) {
-                    return $this->redirect(['/metering/request']);
+                    return $this->redirect(['/metering/default/new-request']);
                 }
             }
         }
@@ -127,7 +127,7 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signupCompany(User::TYPE_COMPANY)) {
                 if (Yii::$app->getUser()->login($user)) {
-                    return $this->redirect(['/company/request']);
+                    return $this->redirect(['/company/default/new-request']);
                 }
             }
         }
@@ -205,7 +205,7 @@ class SiteController extends Controller
             }
 
             if (Yii::$app->user->identity->type == User::TYPE_METERING) {
-                return $this->redirect(['/metering/request']);
+                return $this->redirect(['/metering/default/new-request']);
             }
             if (Yii::$app->user->identity->type == User::TYPE_DELIVERY) {
                 return $this->redirect(['/delivery/request']);
@@ -216,7 +216,7 @@ class SiteController extends Controller
             }
 
             if (Yii::$app->user->identity->type == User::TYPE_COMPANY) {
-                return $this->redirect(['/company/request']);
+                return $this->redirect(['/company/default/new-request']);
             }
 
 

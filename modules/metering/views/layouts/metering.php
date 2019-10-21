@@ -86,9 +86,9 @@ AppAsset::register($this);
                 <?php
                 echo Menu::widget([
                     'items' => [
-                        ['label' => 'Новые заказы', 'url' => ['/metering/request/create']],
-                        ['label' => 'Мои заказы', 'url' => ['/metering/request/']],
-                        ['label' => 'Мои отклики', 'url' => ['#']],
+                        ['label' => 'Новые заказы', 'url' => ['/metering/default/new-request']],
+                        ['label' => 'Мои заказы', 'url' => ['/metering/default/my-request']],
+                        ['label' => 'Мои отклики', 'url' => ['/metering/default/my-response']],
                         ['label' => 'Мои данные', 'url' => ['#']],
                         ['label' => 'Уведомления', 'url' => ['#']],
                         ['label' => 'Документы', 'url' => ['#']],

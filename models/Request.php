@@ -39,7 +39,7 @@ class Request extends \yii\db\ActiveRecord
     const STATUS_CREATE = 0;// BEFORE _AFTER
     const STATUS_METERING_BEFORE = 2;
     const STATUS_METERING_AFTER = 3;
-    const STATUS_COMPANY_BEFORE_AFTER = 4;
+    const STATUS_COMPANY_BEFORE = 4;
     const STATUS_COMPANY_AFTER = 5;
     const STATUS_DELEVERY_BEFORE = 6;
     const STATUS_DELEVERY_AFTER_ = 7;
@@ -110,7 +110,7 @@ class Request extends \yii\db\ActiveRecord
     //все заказы на клиента
     public function getRequestByClientAndStatus($id_client, $status)
     {
-        return static::find()->where(['id_client' => $id_client, 'status_request' => $status])->asArray()->all(); //, 'status' => self::STATUS_ACTIVE]
+        return static::find()->where(['id_client' => $id_client])->andWhere(['in','status_request',$status])->asArray()->all(); //, 'status' => self::STATUS_ACTIVE]
     }
 
     //все заказы на отклик
@@ -118,5 +118,66 @@ class Request extends \yii\db\ActiveRecord
     {
         return static::find()->where(['id_city' => $id_city, 'status_request' => $status])->asArray()->all(); //, 'status' => self::STATUS_ACTIVE]
     }
+
+    //заказ по ид
+    public function getRequestById($id)
+    {
+        return static::find()->where(['id' => $id])->one();
+    }
+
+    //статус заказа
+    public function getStatus($id)
+    {
+        return static::find()->where(['id' => $id])->one()->status_request;
+    }
+
+    //установить замерщика
+    public function setInsertMetering($id, $id_user,$date_metering)
+    {
+        $request = new Request();
+        $request = $this->find()->where(['id' => $id])->one();
+        $request->id_metering = $id_user;
+        $request->date_metering = $date_metering;
+        $request->status_request = static::STATUS_METERING_AFTER;
+
+        if($request->save()) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    //установить компанию
+    public function setInsertCompany($id, $id_user,$price)
+    {
+        $request = new Request();
+        $request = $this->find()->where(['id' => $id])->one();
+        $request->id_company = $id_user;
+        $request->price_company = $price;
+        $request->status_request = static::STATUS_COMPANY_AFTER;
+
+        if($request->save()) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    //изменить статус
+    public function setStatus($id, $status_old, $status_new)
+    {
+        $request = new Request();
+        $request = $this->find()->where(['id' => $id])->andWhere(['status_request'=>$status_old])->one();
+        $request->status_request = $status_new;
+        if($request->save()) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
 
 }

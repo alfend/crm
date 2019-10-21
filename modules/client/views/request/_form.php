@@ -33,7 +33,7 @@ use kartik\datetime\DateTimePicker;
     <h6>Город <?=$city_name;?> установлен в ваших настройках,
         если он определен не верно просим указать город прваильно, в меню мои данные. </h6>
 
-    <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'address')->textInput(['value' => Yii::$app->user->identity->address]) ?>
 
     <?= $form->field($model, 'date_metering_plan')->textInput(['value' => date('Y-m-d')]);//['value' => (new \DateTime('now', new \DateTimeZone('Europe/Moscow')))->format('Y-m-d H:i:s')]) ?>
     <?php
@@ -96,7 +96,7 @@ use kartik\datetime\DateTimePicker;
 
     <?= $form->field($model, 'status_price')->textInput() */ ?>
 
-    <?= $form->field($model, 'status_request')->label(false)->hiddenInput(['value' => '2'])   ?>
+    <?= $form->field($model, 'status_request')->label(false)->hiddenInput(['value' => \app\models\Request::STATUS_METERING_BEFORE])   ?>
 
     <div class="form-group">
         <?= Html::submitButton('Заказать', ['class' => 'btn btn-success']) ?>

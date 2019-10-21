@@ -2,13 +2,15 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use app\models\User;
 use app\models\Request;
+use app\models\Response;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\RequestSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Заказы';
+$this->title = 'Мои заказы';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="request-index">
@@ -16,27 +18,61 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Запись на замер', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php //Html::a('Запись на замер', ['create'], ['class' => 'btn btn-success']); ?>
     </p>
 
     <?php
 
     $request_client = new Request();
-    $array_request_client = $request_client->getRequestByClientAndStatus( Yii::$app->user->getId(), $request_client::STATUS_CREATE);
+    $array_request_client = $request_client->getRequestByClientAndStatus( Yii::$app->user->getId(), [$request_client::STATUS_CREATE,$request_client::STATUS_METERING_BEFORE]);
 
-    print('<h3> Заказы на замер </h3> <table border="1" width="100%"> <tr><th> Дата создания </th><th> Адрес </th><th> Дата замера </th></tr>');
-    foreach ($array_request_client as $request_client){
+    print('<h4> Заказы на замер </h4> <table border="1" width="100%"> <tr><th> Дата создания </th><th> Адрес </th><th> Дата замера </th><th></th></tr>');
+    foreach ($array_request_client as $request){
+        //есть ли отклики на заказ
+        $response = new Response();
+        print('');
+        if($response->findResponseByRequest($request['id'],User::TYPE_METERING)) {
+            $button_res=Html::a('Выбрать замерщика', ['/client/default/select-metering/'],['data-method' => 'POST', 'data-params' => ['id_request' => $request['id'], 'id_clients' => Yii::$app->user->getId(), 'type_workers' => User::TYPE_METERING]], ['class' => 'btn btn-primary']);
+        } else {
+            $button_res='Откликов пока нет';
+        }
+        print('<tr><td>'.$request['date_create'].'</td>'.'<td>'.$request['address'].'</td>'.'<td>'.$request['date_metering_plan'].'</td><td>'.$button_res.'</td></tr>');
 
-        print('<tr><td>'.$request_client['date_create'].'</td>'.'<td>'.$request_client['address'].'</td>'.'<td>'.$request_client['date_metering_plan'].'</td></tr>');
-
-//        print_r($request_client['address']);
     };
 
-    print('<table>');
+    //уже на замере
+    $array_request_client = $request_client->getRequestByClientAndStatus( Yii::$app->user->getId(), [$request_client::STATUS_METERING_AFTER]);
+    foreach ($array_request_client as $request){
+        print('<tr><td>'.$request['date_create'].'</td>'.'<td>'.$request['address'].'</td>'.'<td>'.$request['date_metering'].'</td><td> Замерщик выбран </td></tr>');
+    };
+
+    print('</table>');
+    ?>
 
 
-    // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php
+    //Заказы на изготовление
+    $request_client = new Request();
+    $array_request_client = $request_client->getRequestByClientAndStatus( Yii::$app->user->getId(), [$request_client::STATUS_COMPANY_BEFORE]);
 
+    print('</br><h4> Заказы на изготовление </h4> <table border="1" width="100%"> <tr><th> Дата изготовления </th><th> Адрес </th><th> Дата замера </th><th></th></tr>');
+    foreach ($array_request_client as $request){
+        //есть ли отклики на заказ
+        $response = new Response();
+        print('');
+        if($response->findResponseByRequest($request['id'],User::TYPE_COMPANY)) {
+            $button_res=Html::a('Выбрать изготовителя', ['/client/default/select-company/'],['data-method' => 'POST', 'data-params' => ['id_request' => $request['id'], 'id_clients' => Yii::$app->user->getId(), 'type_workers' => User::TYPE_COMPANY]], ['class' => 'btn btn-primary']);
+        } else {
+            $button_res='Откликов пока нет';
+        }
+        print('<tr><td>'.$request['date_create'].'</td>'.'<td>'.$request['address'].'</td>'.'<td>'.$request['date_metering_plan'].'</td><td>'.$button_res.'</td></tr>');
+
+    };
+    print('</table>');
+    ?>
+
+
+    </br></br></br>Все:
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'summary' => false,
