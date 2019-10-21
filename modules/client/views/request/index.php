@@ -71,6 +71,24 @@ $this->params['breadcrumbs'][] = $this->title;
     print('</table>');
     ?>
 
+    <?php
+    //Заказы на доставку
+    $request_client = new Request();
+    $array_request_client = $request_client->getRequestByClientAndStatus( Yii::$app->user->getId(), [$request_client::STATUS_COMPANY_AFTER,$request_client::STATUS_DELEVERY_BEFORE,$request_client::STATUS_DELEVERY_AFTER]);
+
+    print('</br><h4> Заказы на доставку </h4> <table border="1" width="100%"> <tr><th>  </th><th> Адрес </th><th>  </th><th></th></tr>');
+    foreach ($array_request_client as $request){
+        //доставили ли уже
+        if($request['status_request'] == Request::STATUS_DELEVERY_AFTER) {
+            $button_res=Html::a('Доставили', ['/client/default/delivery-after/'],['data-method' => 'POST', 'data-params' => ['id_request' => $request['id']]], ['class' => 'btn btn-primary']);
+        } else {
+            $button_res='В процессе доставки';
+        }
+        print('<tr><td>'.$request['date_create'].'</td>'.'<td>'.$request['address'].'</td>'.'<td> </td><td> '.$button_res.' </td></tr>');
+    };
+    print('</table>');
+    ?>
+
 
     </br></br></br>Все:
     <?= GridView::widget([

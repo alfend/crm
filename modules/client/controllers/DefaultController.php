@@ -33,7 +33,6 @@ class DefaultController extends Controller
         $response = new Response();
         $workers = $response -> findWorkers($id_request, $type_workers);
         return $this->render('viewSelectMetering', ['workers'=>$workers]);
-
     }
 
     //список откликнвшихся
@@ -49,7 +48,6 @@ class DefaultController extends Controller
         $request->setInsertMetering($id_request,$id_workers,$date_workers);
 
         return $this->redirect('/client/request/index');
-
     }
 
     public function actionSelectCompany()
@@ -76,6 +74,15 @@ class DefaultController extends Controller
         $request->setInsertCompany($id_request,$id_workers,$price);
 
         return $this->redirect('/client/request/index');
+    }
 
+    public function actionDeliveryAfter()
+    {
+        //параметры из пост
+        $id_request=Yii::$app->request->post('id_request', null);;
+        $request = new Request();
+        $request->getRequestById($id_request);
+        $request->setStatus($id_request, Request::STATUS_DELEVERY_AFTER, Request::STATUS_MOUNTING_BEFORE);
+        return $this->redirect('/client/request/index');
     }
 }

@@ -42,7 +42,7 @@ class Request extends \yii\db\ActiveRecord
     const STATUS_COMPANY_BEFORE = 4;
     const STATUS_COMPANY_AFTER = 5;
     const STATUS_DELEVERY_BEFORE = 6;
-    const STATUS_DELEVERY_AFTER_ = 7;
+    const STATUS_DELEVERY_AFTER = 7;
     const STATUS_MOUNTING_BEFORE = 8;
     const STATUS_MOUNTING_AFTER = 9;
     const STATUS_FINISH = 10;
@@ -156,6 +156,22 @@ class Request extends \yii\db\ActiveRecord
         $request->id_company = $id_user;
         $request->price_company = $price;
         $request->status_request = static::STATUS_COMPANY_AFTER;
+
+        if($request->save()) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    //установить доставщика
+    public function setInsertDelivery($id, $id_user)
+    {
+        $request = new Request();
+        $request = $this->find()->where(['id' => $id])->one();
+        $request->id_delivery = $id_user;
+        $request->status_request = static::STATUS_DELEVERY_BEFORE;
 
         if($request->save()) {
             return true;
