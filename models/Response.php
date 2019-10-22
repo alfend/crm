@@ -1,8 +1,6 @@
 <?php
 
 namespace app\models;
-use Yii;
-use app\models\User;
 
 /**
  * This is the model class for table "response".
@@ -69,14 +67,13 @@ class Response extends \yii\db\ActiveRecord
     //есть ли уже отклики для заказа
     public function findResponseByRequest($id_request, $type_workers)
     {
-        $cheсk = $this->find()->where(['id_request'=>$id_request,'type_workers'=>$type_workers])->all(); //
-        return $cheсk; //
+        return $this->find()->where(['id_request'=>$id_request,'type_workers'=>$type_workers])->all();
     }
 
     //список откликнувшихся
     public function findWorkers($id_request, $type_workers)
     {
-        $workers = $this->find()->select(['user.id','user.company','user.firstname','user.secondname','response.id_request','response.date_workers','response.price'])->innerJoin('user', 'user.id = response.id_workers')->where(['id_request'=>$id_request,'type_workers'=>$type_workers])->asArray()->all(); //
+        $workers = $this->find()->select(['user.id','user.company','user.lastname','user.firstname','user.secondname','response.id_request','response.date_workers','response.price'])->innerJoin('user', 'user.id = response.id_workers')->where(['id_request'=>$id_request,'type_workers'=>$type_workers])->asArray()->all(); //
         return $workers;
     }
 

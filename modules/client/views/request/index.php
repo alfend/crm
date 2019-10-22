@@ -41,7 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
     };
 
     //уже на замере
-    $array_request_client = $request_client->getRequestByClientAndStatus( Yii::$app->user->getId(), [$request_client::STATUS_METERING_AFTER]);
+    $array_request_client = $request_client->getRequestByClientAndStatus( Yii::$app->user->getId(), [$request_client::STATUS_METERING_RUN,$request_client::STATUS_METERING_AFTER]);
     foreach ($array_request_client as $request){
         print('<tr><td>'.$request['date_create'].'</td>'.'<td>'.$request['address'].'</td>'.'<td>'.$request['date_metering'].'</td><td> Замерщик выбран </td></tr>');
     };
@@ -55,15 +55,17 @@ $this->params['breadcrumbs'][] = $this->title;
     $request_client = new Request();
     $array_request_client = $request_client->getRequestByClientAndStatus( Yii::$app->user->getId(), [$request_client::STATUS_COMPANY_BEFORE]);
 
-    print('</br><h4> Заказы на изготовление </h4> <table border="1" width="100%"> <tr><th> Дата изготовления </th><th> Адрес </th><th> Дата замера </th><th></th></tr>');
+    print('</br><h4> Заказы на изготовление </h4> <table border="1" width="100%"> <tr><th> Дата создания </th><th> Адрес </th><th> Дата замера </th><th></th></tr>');
     foreach ($array_request_client as $request){
         //есть ли отклики на заказ
         $response = new Response();
         print('');
-        if($response->findResponseByRequest($request['id'],User::TYPE_COMPANY)) {
+        if($request['status_request'] == Request::STATUS_COMPANY_RUN) {
+            $button_res='В процессе изготовления';
+        } elseif($response->findResponseByRequest($request['id'],User::TYPE_COMPANY)) {
             $button_res=Html::a('Выбрать изготовителя', ['/client/default/select-company/'],['data-method' => 'POST', 'data-params' => ['id_request' => $request['id'], 'id_clients' => Yii::$app->user->getId(), 'type_workers' => User::TYPE_COMPANY]], ['class' => 'btn btn-primary']);
         } else {
-            $button_res='Откликов пока нет';
+            $button_res='Ожидаем отклик производителя';
         }
         print('<tr><td>'.$request['date_create'].'</td>'.'<td>'.$request['address'].'</td>'.'<td>'.$request['date_metering_plan'].'</td><td>'.$button_res.'</td></tr>');
 
@@ -74,17 +76,58 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php
     //Заказы на доставку
     $request_client = new Request();
-    $array_request_client = $request_client->getRequestByClientAndStatus( Yii::$app->user->getId(), [$request_client::STATUS_COMPANY_AFTER,$request_client::STATUS_DELEVERY_BEFORE,$request_client::STATUS_DELEVERY_AFTER]);
+    $array_request_client = $request_client->getRequestByClientAndStatus( Yii::$app->user->getId(), [$request_client::STATUS_COMPANY_AFTER,$request_client::STATUS_DELIVERY_BEFORE,$request_client::STATUS_DELIVERY_RUN,$request_client::STATUS_DELIVERY_AFTER]);
 
-    print('</br><h4> Заказы на доставку </h4> <table border="1" width="100%"> <tr><th>  </th><th> Адрес </th><th>  </th><th></th></tr>');
+    print('</br><h4> Заказы на доставку </h4> <table border="1" width="100%"> <tr><th> Дата изготовления </th><th> Адрес </th><th> изготовитель </th><th></th></tr>');
     foreach ($array_request_client as $request){
         //доставили ли уже
-        if($request['status_request'] == Request::STATUS_DELEVERY_AFTER) {
-            $button_res=Html::a('Доставили', ['/client/default/delivery-after/'],['data-method' => 'POST', 'data-params' => ['id_request' => $request['id']]], ['class' => 'btn btn-primary']);
-        } else {
-            $button_res='В процессе доставки';
+        if($request['status_request'] == Request::STATUS_COMPANY_AFTER) {
+            $button_res='Ожидаем назначение курьера';
+        } elseif ($request['status_request'] == Request::STATUS_DELIVERY_BEFORE) {
+            $button_res='Курьер назначен';
+        } else if ($request['status_request'] == Request::STATUS_DELIVERY_RUN){
+            $button_res='Курьер забрал потолок';
+        } else if ($request['status_request'] == Request::STATUS_DELIVERY_AFTER){
+            $button_res=Html::a('Доставили?', ['/client/default/mounting-before/'],['data-method' => 'POST', 'data-params' => ['id_request' => $request['id']]], ['class' => 'btn btn-primary']);
         }
-        print('<tr><td>'.$request['date_create'].'</td>'.'<td>'.$request['address'].'</td>'.'<td> </td><td> '.$button_res.' </td></tr>');
+        $company = new User();
+        $company=User::findIdentity($request['id_company']);
+
+        print('<tr><td>'.$request['date_create'].'</td>'.'<td>'.$request['address'].'</td><td>'.$company['company'].' по адресу '.$company['address'].' </td><td> '.$button_res.' </td></tr>');
+    };
+    print('</table>');
+    ?>
+
+    <?php
+    //Заказы на монтаж
+    $request_client = new Request();
+    $array_request_client = $request_client->getRequestByClientAndStatus( Yii::$app->user->getId(), [$request_client::STATUS_MOUNTING_BEFORE,$request_client::STATUS_MOUNTING_RUN,$request_client::STATUS_MOUNTING_AFTER]);
+    print('</br><h4> Заказы на монтаж </h4> <table border="1" width="100%"> <tr><th> Дата создания </th><th> Адрес </th><th> Дата замера </th><th></th></tr>');
+    foreach ($array_request_client as $request){
+        //есть ли отклики на заказ
+        $response = new Response();
+        if($request['status_request'] == Request::STATUS_MOUNTING_BEFORE) {
+            $button_res=Html::a('Выбрать монтажника', ['/client/default/select-mounting/'],['data-method' => 'POST', 'data-params' => ['id_request' => $request['id'], 'id_clients' => Yii::$app->user->getId(), 'type_workers' => User::TYPE_MOUNTING]], ['class' => 'btn btn-primary']);
+        } elseif($request['status_request'] == Request::STATUS_MOUNTING_RUN) {
+            $button_res='В процессе монтажа';
+        } else {
+            $button_res=Html::a('Установили?', ['/client/default/mounting-after/'],['data-method' => 'POST', 'data-params' => ['id_request' => $request['id']]], ['class' => 'btn btn-primary']);
+        }
+        print('<tr><td>'.$request['date_create'].'</td>'.'<td>'.$request['address'].'</td>'.'<td>'.$request['date_metering_plan'].'</td><td>'.$button_res.'</td></tr>');
+
+    };
+    print('</table>');
+    ?>
+
+    <?php
+    //Заказы на монтаж
+    $request_client = new Request();
+    $array_request_client = $request_client->getRequestByClientAndStatus( Yii::$app->user->getId(), [$request_client::STATUS_FINISH]);
+    print('</br><h4> Заказы выполненные </h4> <table border="1" width="100%"> <tr><th> Дата создания </th><th> Адрес </th><th> Дата замера </th><th></th></tr>');
+    foreach ($array_request_client as $request){
+        //есть ли отклики на заказ
+        print('<tr><td>'.$request['date_create'].'</td>'.'<td>'.$request['address'].'</td>'.'<td>'.$request['date_metering_plan'].'</td><td>Завершен</td></tr>');
+
     };
     print('</table>');
     ?>

@@ -1,8 +1,8 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
 use app\models\Request;
+use app\models\Response;
 use app\models\User;
 use app\models\DataMetering;
 
@@ -23,22 +23,28 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php
     //Вывод заказов
     $request = new Request();
-    $array_request = $request->getRequestByStatus( Yii::$app->user->identity->id_city, $request::STATUS_COMPANY_AFTER);
+    $array_request = $request->getRequestByWorkerAndStatusCompany( Yii::$app->user->getId(), [$request::STATUS_COMPANY_RUN,$request::STATUS_COMPANY_AFTER,$request::STATUS_DELIVERY_BEFORE]);
 
-    print('<h3> Заказы на изготовление </h3> <table border="1" width="100%"> <tr><th> Дата создания </th><th> Адрес </th><th> Дата замера </th><th></th></tr>');
+    print('<h3> Заказы на изготовление </h3> <table border="1" width="100%"> <tr><th> Дата изготовления(план) </th><th> Адрес доставки </th><th> Дата замера </th><th> Доставщик </th><th></th></tr>');
     foreach ($array_request as $request){
-
+        //для вывода замеров
         $dataMetering = new DataMetering();
-        //вносил ли уже замеры
-        if(!$dataMetering->cheсkDataMetering($request['id'],Yii::$app->user->getId())) {
-            $button_res=Html::a('Ввести замер', ['/company/data-metering/create'],['data-method' => 'POST', 'data-params' => ['id_request' => $request['id']]], ['class' => 'btn btn-primary']);
-        } else {
-            $button_res=Html::a('Изменить замер', ['/company/data-metering/update', 'id' => $dataMetering->cheсkDataMetering($request['id'],Yii::$app->user->getId())->id],['data-method' => 'POST', 'data-params' => ['id_request' => $request['id']]], ['class' => 'btn btn-primary']);
+        $dataMetering->cheсkDataMetering($request['id'],Yii::$app->user->getId());
+        //изготовлено ли уже
+        if($request['status_request'] == Request::STATUS_COMPANY_RUN) {
+
+            $button_res=Html::a('Изготовлено', ['/company/default/company-run'],['data-method' => 'POST', 'data-params' => ['id_request' => $request['id']]], ['class' => 'btn btn-primary']);
+        } elseif($request['status_request'] == Request::STATUS_COMPANY_AFTER) {
+            $button_res='Ждите курьера';
+        } else  if($request['status_request'] == Request::STATUS_DELIVERY_BEFORE){
+            $button_res='Курьер назначен';
         }
 
-
-
-        print('<tr><td>'.$request['date_create'].'</td>'.'<td>'.$request['address'].'</td>'.'<td>'.$request['date_metering_plan'].'</td><td> '.$button_res.'</td></tr>');
+        $response = new Response();
+        $response = $response->cheсkResponse($request['id'],Yii::$app->user->getId(),User::TYPE_COMPANY);
+        $delivery = new User();
+        $delivery = $delivery->findIdentity($request['id_delivery']);
+        print('<tr><td>'.$response['date_workers'].'</td><td>'.$request['address'].'</td><td>'.$request['date_metering_plan'].'</td><td> '.$delivery['lastname'].'</td><td> '.$button_res.'</td></tr>');
     };
 
     print('</table>');

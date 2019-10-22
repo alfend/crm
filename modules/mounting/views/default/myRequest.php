@@ -21,9 +21,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <?php
-    //Вывод заказов
+    //Вывод заказов на замер
     $request = new Request();
-    $array_request = $request->getRequestByWorkerAndStatusMetering( Yii::$app->user->getId(), [$request::STATUS_METERING_RUN,$request::STATUS_METERING_AFTER]);
+    $array_request = $request->getRequestByWorkerAndStatusMetering( Yii::$app->user->getId(), $request::STATUS_METERING_AFTER);
 
     print('<h3> Заказы на замер </h3> <table border="1" width="100%"> <tr><th> Дата создания </th><th> Адрес </th><th> Дата замера </th><th></th></tr>');
     foreach ($array_request as $request){
@@ -37,6 +37,29 @@ $this->params['breadcrumbs'][] = $this->title;
         }
 
 
+
+        print('<tr><td>'.$request['date_create'].'</td>'.'<td>'.$request['address'].'</td>'.'<td>'.$request['date_metering_plan'].'</td><td> '.$button_res.'</td></tr>');
+    };
+
+    print('</table>');
+
+    ?>
+
+    <?php
+    //Вывод заказов на монтаж
+    $request = new Request();
+    $array_request = $request->getRequestByWorkerAndStatusMounting( Yii::$app->user->getId(), $request::STATUS_MOUNTING_RUN);
+
+    print('<h3> Заказы на замер </h3> <table border="1" width="100%"> <tr><th> Дата создания </th><th> Адрес </th><th> Дата замера </th><th></th></tr>');
+    foreach ($array_request as $request){
+
+        $dataMetering = new DataMetering();
+        //вносил ли уже замеры
+    if($request['status_request'] == Request::STATUS_MOUNTING_RUN) {
+        $button_res = Html::a('Исполнено', ['/mounting/default/mounting-run'],
+            ['data-method' => 'POST', 'data-params' => ['id_request' => $request['id']]],
+            ['class' => 'btn btn-primary']);
+    }
 
         print('<tr><td>'.$request['date_create'].'</td>'.'<td>'.$request['address'].'</td>'.'<td>'.$request['date_metering_plan'].'</td><td> '.$button_res.'</td></tr>');
     };

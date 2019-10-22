@@ -46,6 +46,7 @@ class DefaultController extends Controller
         $request = new Request();
         $request->getRequestById($id_request);
         $request->setInsertMetering($id_request,$id_workers,$date_workers);
+        $request->setStatus($id_request, Request::STATUS_METERING_BEFORE, Request::STATUS_METERING_RUN);
 
         return $this->redirect('/client/request/index');
     }
@@ -58,7 +59,6 @@ class DefaultController extends Controller
         $response = new Response();
         $workers = $response -> findWorkers($id_request, $type_workers);
         return $this->render('viewSelectCompany', ['workers'=>$workers]);
-
     }
 
     //список откликнвшихся
@@ -72,17 +72,56 @@ class DefaultController extends Controller
         $request = new Request();
         $request->getRequestById($id_request);
         $request->setInsertCompany($id_request,$id_workers,$price);
-
+        $request->setStatus($id_request, Request::STATUS_COMPANY_BEFORE, Request::STATUS_COMPANY_RUN);
         return $this->redirect('/client/request/index');
     }
 
-    public function actionDeliveryAfter()
+    // Подтвердить заявку что доставил
+    public function actionMountingBefore()
     {
         //параметры из пост
         $id_request=Yii::$app->request->post('id_request', null);;
+
         $request = new Request();
         $request->getRequestById($id_request);
-        $request->setStatus($id_request, Request::STATUS_DELEVERY_AFTER, Request::STATUS_MOUNTING_BEFORE);
+        $request->setStatus($id_request, Request::STATUS_DELIVERY_AFTER, Request::STATUS_MOUNTING_BEFORE);
+        //print_r($request);
+        return $this->redirect('/client/request/index');
+    }
+    public function actionMountingAfter()
+    {
+        //параметры из пост
+        $id_request=Yii::$app->request->post('id_request', null);;
+
+        $request = new Request();
+        $request->getRequestById($id_request);
+        $request->setStatus($id_request, Request::STATUS_MOUNTING_AFTER, Request::STATUS_FINISH);
+        //print_r($request);
+        return $this->redirect('/client/request/index');
+    }
+
+
+    public function actionSelectMounting()
+    {
+        //параметры из пост
+        $id_request=Yii::$app->request->post('id_request', null);;
+        $type_workers=Yii::$app->request->post('type_workers', null);;
+        $response = new Response();
+        $workers = $response -> findWorkers($id_request, $type_workers);
+        return $this->render('viewSelectMounting', ['workers'=>$workers]);
+    }
+
+    public function actionInsertMounting()
+    {
+        //параметры из пост
+        $id_request=Yii::$app->request->post('id_request', null);;
+        $id_workers=Yii::$app->request->post('id_workers', null);;
+        $price=Yii::$app->request->post('price', null);;
+
+        $request = new Request();
+        $request->getRequestById($id_request);
+        $request->setInsertMounting($id_request,$id_workers,$price);
+        $request->setStatus($id_request, Request::STATUS_MOUNTING_BEFORE, Request::STATUS_MOUNTING_RUN);
         return $this->redirect('/client/request/index');
     }
 }

@@ -36,16 +36,20 @@ class Request extends \yii\db\ActiveRecord
 {
 
     const STATUS_DELETED = -1;
-    const STATUS_CREATE = 0;// BEFORE _AFTER
-    const STATUS_METERING_BEFORE = 2;
+    const STATUS_CREATE = 0;// BEFORE RUN AFTER
+    const STATUS_METERING_BEFORE = 1;
+    const STATUS_METERING_RUN = 2;
     const STATUS_METERING_AFTER = 3;
     const STATUS_COMPANY_BEFORE = 4;
-    const STATUS_COMPANY_AFTER = 5;
-    const STATUS_DELEVERY_BEFORE = 6;
-    const STATUS_DELEVERY_AFTER = 7;
-    const STATUS_MOUNTING_BEFORE = 8;
-    const STATUS_MOUNTING_AFTER = 9;
-    const STATUS_FINISH = 10;
+    const STATUS_COMPANY_RUN = 5;
+    const STATUS_COMPANY_AFTER = 6;
+    const STATUS_DELIVERY_BEFORE = 7;
+    const STATUS_DELIVERY_RUN = 8;
+    const STATUS_DELIVERY_AFTER = 9;
+    const STATUS_MOUNTING_BEFORE = 10;
+    const STATUS_MOUNTING_RUN = 11;
+    const STATUS_MOUNTING_AFTER = 12;
+    const STATUS_FINISH = 15;
 
     /**
      * {@inheritdoc}
@@ -113,6 +117,31 @@ class Request extends \yii\db\ActiveRecord
         return static::find()->where(['id_client' => $id_client])->andWhere(['in','status_request',$status])->asArray()->all(); //, 'status' => self::STATUS_ACTIVE]
     }
 
+    //все заказы на замер рабтника
+    public function getRequestByWorkerAndStatusMetering($id_worker, $status)
+    {
+        return static::find()->where(['id_metering' => $id_worker])->andWhere(['in','status_request',$status])->asArray()->all(); //, 'status' => self::STATUS_ACTIVE]
+    }
+
+    //все заказы на доставку рабтника
+    public function getRequestByWorkerAndStatusDelivery($id_worker, $status)
+    {
+        return static::find()->where(['id_delivery' => $id_worker])->andWhere(['in','status_request',$status])->asArray()->all(); //, 'status' => self::STATUS_ACTIVE]
+    }
+
+    //все заказы на изготовление
+    public function getRequestByWorkerAndStatusCompany($id_worker, $status)
+    {
+        return static::find()->where(['id_company' => $id_worker])->andWhere(['in','status_request',$status])->asArray()->all(); //, 'status' => self::STATUS_ACTIVE]
+    }
+
+    //все заказы на монтаж
+    public function getRequestByWorkerAndStatusMounting($id_worker, $status)
+    {
+        return static::find()->where(['id_mounting' => $id_worker])->andWhere(['in','status_request',$status])->asArray()->all(); //, 'status' => self::STATUS_ACTIVE]
+    }
+
+
     //все заказы на отклик
     public function getRequestByStatus($id_city,$status)
     {
@@ -138,8 +167,6 @@ class Request extends \yii\db\ActiveRecord
         $request = $this->find()->where(['id' => $id])->one();
         $request->id_metering = $id_user;
         $request->date_metering = $date_metering;
-        $request->status_request = static::STATUS_METERING_AFTER;
-
         if($request->save()) {
             return true;
         } else {
@@ -155,23 +182,20 @@ class Request extends \yii\db\ActiveRecord
         $request = $this->find()->where(['id' => $id])->one();
         $request->id_company = $id_user;
         $request->price_company = $price;
-        $request->status_request = static::STATUS_COMPANY_AFTER;
-
         if($request->save()) {
             return true;
         } else {
             return false;
         }
-
     }
 
     //установить доставщика
-    public function setInsertDelivery($id, $id_user)
+    public function setInsertDelivery($id, $id_user, $status)
     {
         $request = new Request();
         $request = $this->find()->where(['id' => $id])->one();
         $request->id_delivery = $id_user;
-        $request->status_request = static::STATUS_DELEVERY_BEFORE;
+        $request->status_request = $status;
 
         if($request->save()) {
             return true;
@@ -181,6 +205,19 @@ class Request extends \yii\db\ActiveRecord
 
     }
 
+    //установить монтажника
+    public function setInsertMounting($id, $id_user,$price)
+    {
+        $request = new Request();
+        $request = $this->find()->where(['id' => $id])->one();
+        $request->id_mounting = $id_user;
+        $request->price_mounting = $price;
+        if($request->save()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     //изменить статус
     public function setStatus($id, $status_old, $status_new)
     {

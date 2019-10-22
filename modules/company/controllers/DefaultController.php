@@ -2,6 +2,7 @@
 
 namespace app\modules\company\controllers;
 
+use app\models\Request;
 use Yii;
 use yii\web\Controller;
 use app\models\Response;
@@ -36,7 +37,7 @@ class DefaultController extends Controller
         return $this->render('myResponse');
     }
 
-
+    //создать отклик
     public function actionCreateResponse()
     {
 
@@ -49,7 +50,7 @@ class DefaultController extends Controller
         $response = new Response();
         $response -> createResponse($id_request, $id_workers, $type_workers, $date_workers, $price);
         //print($id_request.' '.$id_workers.' '.$type_workers.' '.$date_workers.' '.$price);
-        return $this->redirect('/company/default/my-request');
+        return $this->redirect('/company/default/my-response');
     }
 
     //удалить отклик
@@ -61,6 +62,17 @@ class DefaultController extends Controller
         $response = new Response();
         $response -> deleteResponse($id_request, $id_workers, $type_workers);
         return $this->redirect('/company/default/new-request');
+    }
+
+    //выполнил
+    public function actionCompanyRun()
+    {
+
+        $id_request=Yii::$app->request->post('id_request', null);
+
+        $request = new Request();
+        $request -> setStatus($id_request, Request::STATUS_COMPANY_RUN, Request::STATUS_COMPANY_AFTER);
+        return $this->redirect('/company/default/my-request');
     }
 
 }

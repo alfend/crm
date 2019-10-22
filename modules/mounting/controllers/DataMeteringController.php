@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\metering\controllers;
+namespace app\modules\mounting\controllers;
 
 use app\models\Request;
 use Yii;
@@ -69,7 +69,7 @@ class DataMeteringController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $request = new Request();
-            $prov = $request->setStatus($model->id_request,Request::STATUS_METERING_RUN,Request::STATUS_COMPANY_BEFORE);
+            $prov = $request->setStatus($model->id_request,Request::STATUS_METERING_AFTER,Request::STATUS_COMPANY_BEFORE);
             return $this->redirect(['/metering/default/my-request']);
         }
 
@@ -90,7 +90,7 @@ class DataMeteringController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['/metering/default/my-request']);
+            return $this->redirect(['/mounting/default/my-request']);
         }
 
         return $this->render('update', [

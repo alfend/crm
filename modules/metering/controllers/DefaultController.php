@@ -47,7 +47,7 @@ class DefaultController extends Controller
         $response = new Response();
         $response -> createResponse($id_request, $id_workers, $type_workers,$date_workers);
         //print($id_request. $id_workers. $type_workers);
-        return $this->redirect('/metering/default/my-request');
+        return $this->redirect('/metering/default/my-response');
     }
 
     //удалить отклик

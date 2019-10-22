@@ -33,8 +33,6 @@ $this->params['breadcrumbs'][] = $this->title;
             $button_res=Html::a('Отказаться', ['/company/default/delete-response/'],['data-method' => 'POST', 'data-params' => ['id_request' => $request['id'], 'id_workers' => Yii::$app->user->getId(), 'type_workers' => User::TYPE_COMPANY]], ['class' => 'btn btn-primary']);
             print('<tr><td>'.$request['address'].'</td>'.'<td>'.$response['price'].'</td>'.'<td>'.$response['date_workers'].'</td><td>'.$button_res.'</td></tr>');
         }
-
-
     };
 
     print('</table>');

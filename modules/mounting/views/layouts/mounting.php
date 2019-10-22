@@ -86,13 +86,14 @@ AppAsset::register($this);
                 <?php
                 echo Menu::widget([
                     'items' => [
-                        ['label' => 'Новые заказы', 'url' => ['/mounting/request/create']],
-                        ['label' => 'Мои заказы', 'url' => ['/mounting/request/']],
-                        ['label' => 'Мои отклики', 'url' => ['#']],
+                        ['label' => 'Новые заказы', 'url' => ['/mounting/default/new-request']],
+                        ['label' => 'Мои заказы', 'url' => ['/mounting/default/my-request']],
+                        ['label' => 'Мои отклики', 'url' => ['/mounting/default/my-response']],
                         ['label' => 'Мои данные', 'url' => ['#']],
                         ['label' => 'Уведомления', 'url' => ['#']],
                         ['label' => 'Документы', 'url' => ['#']],
                         ['label' => 'Баланс', 'url' => ['#']],
+
                     ],
                 ]);
                 ?>

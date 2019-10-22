@@ -22,15 +22,23 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php
     //Вывод заказов
     $request = new Request();
-    $array_request = $request->getRequestByStatus( Yii::$app->user->identity->id_city, $request::STATUS_DELEVERY_BEFORE);
+    $array_request = $request->getRequestByWorkerAndStatusDelivery( Yii::$app->user->getId(), [$request::STATUS_DELIVERY_BEFORE,$request::STATUS_DELIVERY_RUN,$request::STATUS_DELIVERY_AFTER]);
 
     print('<h3> Заказы на доставку </h3> <table border="1" width="100%"> <tr><th> Дата создания </th><th> Адрес отправки </th><th> Адрес доставки </th><th></th></tr>');
     foreach ($array_request as $request){
 
-        //вносил ли уже замеры
-        $button_res=Html::a('Доставил', ['/delivery/default/delivery-after'],['data-method' => 'POST', 'data-params' => ['id_request' => $request['id'],'id_workers' => Yii::$app->user->getId()]], ['class' => 'btn btn-primary']);
+        //доставка
+        $button_res='';
+        if($request['status_request'] == Request::STATUS_DELIVERY_BEFORE) {
+            $button_res=Html::a('Забрал', ['/delivery/default/delivery-run'],['data-method' => 'POST', 'data-params' => ['id_request' => $request['id']]], ['class' => 'btn btn-primary']);
+        } elseif($request['status_request'] == Request::STATUS_DELIVERY_RUN) {
+            $button_res=Html::a('Доставил', ['/delivery/default/delivery-after'],['data-method' => 'POST', 'data-params' => ['id_request' => $request['id']]], ['class' => 'btn btn-primary']);
+        } elseif($request['status_request'] == Request::STATUS_DELIVERY_AFTER) {
+            $button_res = 'Ожидайте подтверждение клиента';
+        }
+
         $company = new User();
-        $company = User::findIdentity($request['id_company']);
+        $company = $company->findIdentity($request['id_company']);
         print('<tr><td>'.$request['date_create'].'</td>'.'<td>'.$company['address_delivery'].'</td>'.'<td>'.$request['address'].'</td><td> '.$button_res.'</td></tr>');
 
 

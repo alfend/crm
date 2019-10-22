@@ -32,11 +32,11 @@ class SignupFormCompany extends Model
     public function rules()
     {
         return [
-            [['date_create', 'company','id_city',  'email', 'tel', 'password'], 'required', 'message' => 'Обязательное поле.'],
+            [['date_create','address_delivery', 'company','id_city',  'email', 'tel', 'password'], 'required', 'message' => 'Обязательное поле.'],
             [['date_create', 'birthday'], 'safe'],
             [['id_city', 'status'], 'integer'],
             [['company', 'tel'], 'string', 'max' => 255], //'lastname', 'firstname', 'secondname'
-            [['address', 'email', 'password'], 'string', 'max' => 255],
+            [['address','address_delivery', 'email', 'password'], 'string', 'max' => 255],
             ['email', 'email', 'message' => 'Нужно ввести email.'],
             ['email', 'trim'],
             ['email', 'unique', 'targetClass' => '\app\models\User', 'message' => 'Этот email уже занят.'],
@@ -67,6 +67,7 @@ class SignupFormCompany extends Model
         $user->id_city = $this->id_city;
         $user->status = $this->status;
         $user->type = $type;
+        $user->address_delivery = $this->address_delivery;
        //echo '<pre>'; print_r($user); die;
         return $user->save() ? $user : null;
 

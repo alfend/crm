@@ -44,22 +44,34 @@ class DefaultController extends Controller
 
         $request = new Request();
         $request->getRequestById($id_request);
-        $request->setInsertDelivery($id_request,$id_workers);
+        $request->setInsertDelivery($id_request,$id_workers,Request::STATUS_DELIVERY_BEFORE);
 
-        return $this->redirect('/delivery/default/myRequest');
+        return $this->redirect('/delivery/default/my-request');
     }
 
     //Доставил
+    public function actionDeliveryRun()
+    {
+        //параметры из пост
+        $id_request=Yii::$app->request->post('id_request', null);;
+
+        $request = new Request();
+        $request->getRequestById($id_request);
+        $request->setStatus($id_request, Request::STATUS_DELIVERY_BEFORE, Request::STATUS_DELIVERY_RUN);
+
+        return $this->redirect('/delivery/default/my-request');
+    }
+
+    // Отправить заявку что доставил
     public function actionDeliveryAfter()
     {
         //параметры из пост
         $id_request=Yii::$app->request->post('id_request', null);;
-        $id_workers=Yii::$app->request->post('id_workers', null);;
 
         $request = new Request();
         $request->getRequestById($id_request);
-        $request->setStatus($id_request, Request::STATUS_DELEVERY_BEFORE, Request::STATUS_DELEVERY_AFTER);
-
-        return $this->redirect('/delivery/default/myRequest');
+        $request->setStatus($id_request, Request::STATUS_DELIVERY_RUN, Request::STATUS_DELIVERY_AFTER);
+        //print_r($request);
+        return $this->redirect('/delivery/default/my-request');
     }
 }
