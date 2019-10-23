@@ -53,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php
     //Заказы на изготовление
     $request_client = new Request();
-    $array_request_client = $request_client->getRequestByClientAndStatus( Yii::$app->user->getId(), [$request_client::STATUS_COMPANY_BEFORE]);
+    $array_request_client = $request_client->getRequestByClientAndStatus( Yii::$app->user->getId(), [$request_client::STATUS_COMPANY_BEFORE,$request_client::STATUS_COMPANY_RUN]);
 
     print('</br><h4> Заказы на изготовление </h4> <table border="1" width="100%"> <tr><th> Дата создания </th><th> Адрес </th><th> Дата замера </th><th></th></tr>');
     foreach ($array_request_client as $request){
@@ -133,7 +133,7 @@ $this->params['breadcrumbs'][] = $this->title;
     ?>
 
 
-    </br></br></br>Все:
+    Все:
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'summary' => false,

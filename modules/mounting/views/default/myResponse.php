@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
 use app\models\Request;
 use app\models\User;
 use app\models\Response;
@@ -21,15 +20,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <?php
-    //Вывод
+    //Вывод на замер
     $request = new Request();
-    $array_request = $request->getRequestByStatus( Yii::$app->user->identity->id_city, $request::STATUS_METERING_BEFORE);
+    $array_request = $request->getRequestByWorkerAndStatusMounting( Yii::$app->user->getId(), $request::STATUS_METERING_BEFORE);
 
     print('<h3> Отклики на заказы </h3> <table border="1" width="100%"> <tr><th> Дата создания </th><th> Адрес </th><th> Дата замера </th><th></th></tr>');
     foreach ($array_request as $request){
         $response = new Response();
         if($response->cheсkResponse($request['id'],Yii::$app->user->getId(),User::TYPE_METERING)) {
-            $button_res=Html::a('Отказаться', ['/metering/default/delete-response/'],['data-method' => 'POST', 'data-params' => ['id_request' => $request['id'], 'id_workers' => Yii::$app->user->getId(), 'type_workers' => User::TYPE_METERING]], ['class' => 'btn btn-primary']);
+            $button_res=Html::a('Отказаться', ['/mounting/default/delete-response/'],['data-method' => 'POST', 'data-params' => ['id_request' => $request['id'], 'id_workers' => Yii::$app->user->getId(), 'type_workers' => User::TYPE_MOUNTING]], ['class' => 'btn btn-primary']);
             print('<tr><td>'.$request['date_create'].'</td>'.'<td>'.$request['address'].'</td>'.'<td>'.$request['date_metering_plan'].'</td><td>'.$button_res.'</td></tr>');
         }
 
@@ -38,6 +37,26 @@ $this->params['breadcrumbs'][] = $this->title;
 
     print('</table>');
 
+    ?>
+
+        <?php
+    //Вывод ДОДЕЛАТЬ
+    $request = new Request();
+    $array_request = $request->getRequestByStatus( Yii::$app->user->identity->id_city, $request::STATUS_MOUNTING_BEFORE);
+        print_r($array_request);
+    print('<h3> Отклики на заказы </h3> <table border="1" width="100%"> <tr><th> Дата создания </th><th> Адрес </th><th> Дата замера </th><th></th></tr>');
+    foreach ($array_request as $request){
+        $response = new Response();
+        if($response->cheсkResponse($request['id'],Yii::$app->user->getId(),User::TYPE_COMPANY)) {
+            $button_res=Html::a('Отказаться', ['/mounting/default/delete-response/'],['data-method' => 'POST', 'data-params' => ['id_request' => $request['id'], 'id_workers' => Yii::$app->user->getId(), 'type_workers' => User::TYPE_COMPANY]], ['class' => 'btn btn-primary']);
+            print('<tr><td>'.$request['date_create'].'</td>'.'<td>'.$request['address'].'</td>'.'<td>'.$request['date_metering_plan'].'</td><td>'.$button_res.'</td></tr>');
+        }
+
+
+
+    };
+
+    print('</table>');
     ?>
 
 </div>

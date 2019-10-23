@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
 use app\models\Request;
 use app\models\User;
 use app\models\Response;
@@ -27,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
         $response = new Response();
         //если еще не откликался
         if(!$response->cheсkResponse($request['id'],Yii::$app->user->getId(),User::TYPE_METERING)) {
-            $button_res=Html::a('Откликнуться', ['/metering/default/create-response/'],['data-method' => 'POST', 'data-params' => ['id_request' => $request['id'], 'id_workers' => Yii::$app->user->getId(), 'type_workers' => User::TYPE_METERING,'date_workers' => $request['date_metering_plan']]], ['class' => 'btn btn-primary']);
+            $button_res=Html::a('Откликнуться', ['/mounting/default/create-response/'],['data-method' => 'POST', 'data-params' => ['id_request' => $request['id'], 'id_workers' => Yii::$app->user->getId(), 'type_workers' => User::TYPE_METERING,'date_workers' => $request['date_metering_plan']]], ['class' => 'btn btn-primary']);
             print('<tr><td>'.$request['date_create'].'</td>'.'<td>'.$request['address'].'</td>'.'<td>'.$request['date_metering_plan'].'</td><td>'.$button_res.'</td></tr>');
         }
     };
