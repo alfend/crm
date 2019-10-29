@@ -1,12 +1,12 @@
+<?php
+use yii\helpers\Html;
+?>
+
 <div class="metering-default-index">
-    <h1><?= $this->context->action->uniqueId ?></h1>
-    <p>
-        This is the view content for action "<?= $this->context->action->id ?>".
-        The action belongs to the controller "<?= get_class($this->context) ?>"
-        in the "<?= $this->context->module->id ?>" module.
-    </p>
-    <p>
-        You may customize this page by editing the following file:<br>
-        <code><?= __FILE__ ?></code>
-    </p>
+
+
+    <?php print(Html::a('<img src="/web/uploads/images/mobile/item-request.jpg"> Новые заказы', ['/metering/default/new-request']));?>
+    </br><?php print(Html::a('<img src="/web/uploads/images/mobile/item-request.jpg"> Мои заказы', ['/metering/default/my-request']));?>
+    </br><?php print(Html::a('<img src="/web/uploads/images/mobile/item-request.jpg"> Отклики', ['/metering/default/my-response']));?>
+
 </div>

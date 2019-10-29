@@ -185,7 +185,11 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        return $this->render('index');
+      //  if(\Yii::$app->mobileDetect->isMobile()){print(1);};
+      //  if(\Yii::$app->mobileDetect->isDesktop()){return $this->render('index');};
+      //  if(\Yii::$app->mobileDetect->isTablet()){print(3);};
+
+       return $this->render('index');
     }
 
     public function actionLogin()
@@ -205,7 +209,13 @@ class SiteController extends Controller
             }
 
             if (Yii::$app->user->identity->type == User::TYPE_METERING) {
-                return $this->redirect(['/metering/default/new-request']);
+                //если с мобильного
+                if(\Yii::$app->mobileDetect->isMobile() or \Yii::$app->mobileDetect->isTablet()) {
+                    return $this->redirect(['/metering/default/index']);
+                } else {
+                    return $this->redirect(['/metering/default/new-request']);
+                }
+
             }
             if (Yii::$app->user->identity->type == User::TYPE_DELIVERY) {
                 return $this->redirect(['/delivery/default/new-request']);

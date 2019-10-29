@@ -9,6 +9,8 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\UploadForm;
+use yii\web\UploadedFile;
 
 /**
  * DataMeteringController implements the CRUD actions for DataMetering model.
@@ -68,7 +70,11 @@ class DataMeteringController extends Controller
         $model = new DataMetering();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+            $model->images = UploadedFile::getInstances($model, 'images');
+            if ($model->upload()) {;}
             $request = new Request();
+            //$model->file='web/uploads/images/metering/'.$model->file->baseName . '.' . $model->file->extension;
             $prov = $request->setStatus($model->id_request,Request::STATUS_METERING_RUN,Request::STATUS_COMPANY_BEFORE);
             return $this->redirect(['/metering/default/my-request']);
         }
@@ -87,15 +93,20 @@ class DataMeteringController extends Controller
      */
     public function actionUpdate($id)
     {
+
+
+        $model = new DataMetering();
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $model->images = UploadedFile::getInstances($model, 'images');
+            if ($model->upload()) {;}
             return $this->redirect(['/metering/default/my-request']);
-        }
-
+        };
         return $this->render('update', [
             'model' => $model,
         ]);
+
     }
 
     /**

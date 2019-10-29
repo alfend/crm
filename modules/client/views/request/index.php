@@ -133,8 +133,12 @@ $this->params['breadcrumbs'][] = $this->title;
     ?>
 
 
-    Все:
-    <?= GridView::widget([
+
+    <?php
+    /*
+    print('Все:');
+
+        GridView::widget([
         'dataProvider' => $dataProvider,
         'summary' => false,
         //'filterModel' => $searchModel,
@@ -171,7 +175,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
            // ['class' => 'yii\grid\ActionColumn'],
         ],
-    ]); ?>
+    ]); */
+    ?>
 
 
 </div>

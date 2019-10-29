@@ -9,6 +9,8 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
+use app\models\User;
+
 
 AppAsset::register($this);
 ?>
@@ -47,6 +49,23 @@ AppAsset::register($this);
         $menuItems[] = ['label' => 'Зарегистрироваться', 'url' => ['/site/signup']];
         $menuItems[] = ['label' => 'Войти', 'url' => ['/site/login']];
     } else {
+        if (Yii::$app->user->identity->type == User::TYPE_CLIENT) {
+            $menuItems[] = ['label' => 'Основное меню', 'url' => ['/client/default/index']];
+        };
+        if (Yii::$app->user->identity->type == User::TYPE_METERING) {
+            $menuItems[] = ['label' => 'Основное меню', 'url' => ['/metering/default/index']];
+        };
+        if (Yii::$app->user->identity->type == User::TYPE_COMPANY) {
+            $menuItems[] = ['label' => 'Основное меню', 'url' => ['/company/default/index']];
+        };
+        if (Yii::$app->user->identity->type == User::TYPE_DELIVERY) {
+            $menuItems[] = ['label' => 'Основное меню', 'url' => ['/delivery/default/index']];
+        };
+        if (Yii::$app->user->identity->type == User::TYPE_MOUNTING) {
+            $menuItems[] = ['label' => 'Основное меню', 'url' => ['/mountig/default/index']];
+        };
+
+
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(

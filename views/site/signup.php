@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= $form->field($model, 'id_city')->dropDownList(\yii\helpers\ArrayHelper::map(City::find()->all(), 'id', 'name'),
                 ['options' => [$idCity => ['Selected' => true]]])->label('Город');?>
             <h6>Город <?=$city_name;?> мы определили автоматически на основе вашего IP адреса,
-                если он определен не верно просим выбрать прваильно. </h6>
+                если он определен не верно просим выбрать правильно. </h6>
             <?= $form->field($model, 'address')->textInput(['maxlength' => true])->label('Адрес:') ?>
 
             <?= $form->field($model, 'status')->label(false)->hiddenInput(['value' => '0'])?>

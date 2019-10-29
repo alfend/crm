@@ -69,8 +69,8 @@ class DataMeteringController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $request = new Request();
-            $prov = $request->setStatus($model->id_request,Request::STATUS_METERING_AFTER,Request::STATUS_COMPANY_BEFORE);
-            return $this->redirect(['/metering/default/my-request']);
+            $request->setStatus($model->id_request,Request::STATUS_METERING_AFTER,Request::STATUS_COMPANY_BEFORE);
+            return $this->redirect(['/mounting/default/my-request']);
         }
 
         return $this->render('create', [

@@ -73,4 +73,34 @@ class SignupForm extends Model
         }*/
     }
 
+    public function updateUser($id)
+    {
+        if (!$this->validate()) {return null;};
+        $user = new User();
+        $user = User::findIdentity($id);
+        $user->email = $this->email;
+        $user->password = $this->password;
+        $user->generateAuthKey();
+        $user->tel = $this->tel;
+        $user->lastname = $this->lastname;
+        $user->firstname = $this->firstname;
+        $user->secondname = $this->secondname;
+        $user->date_create = $this->date_create;
+        $user->birthday = $this->birthday;
+        $user->address = $this->address;
+        $user->id_city = $this->id_city;
+        $user->status = $this->status;
+        //echo '<pre>'; print_r($user); die;
+        return $user->save() ? $user : null;
+
+        /*if($user->save()){
+            return $this->goHome();
+        }*/
+    }
+
+    public static function findIdentity($id)
+    {
+        return static::findOne($id);
+    }
+
 }

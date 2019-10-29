@@ -48,7 +48,7 @@ class DefaultController extends Controller
         $response = new Response();
         $response -> createResponse($id_request, $id_workers, $type_workers,$date_workers);
         //print($id_request. $id_workers. $type_workers);
-        return $this->redirect('/metering/default/my-request');
+        return $this->redirect('/mounting/default/my-request');
     }
 
     //удалить отклик
@@ -60,7 +60,7 @@ class DefaultController extends Controller
         $type_workers=Yii::$app->request->post('type_workers', null);
         $response = new Response();
         $response -> deleteResponse($id_request, $id_workers, $type_workers);
-        return $this->redirect('/metering/default/new-request');
+        return $this->redirect('/mounting/default/new-request');
     }
 
 
