@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use app\models\Request;
+use app\models\City;
 use app\models\User;
 use app\models\DataMetering;
 
@@ -79,7 +80,64 @@ $this->params['breadcrumbs'][] = $this->title;
        print('</table>');
     }
 
-    ?>
+     ?>
+
+    <!-- Яндекс карта -->
+    <div id="map" style="width: 100%; height: 300px"></div>
+
+    <!-- Прокладка маршрута -->
+    <script type="text/javascript">
+        ymaps.ready(init);
+
+        function init () {
+            /**
+             * Создаем мультимаршрут.
+             * Первым аргументом передаем модель либо объект описания модели.
+             * Вторым аргументом передаем опции отображения мультимаршрута.
+             * @see https://api.yandex.ru/maps/doc/jsapi/2.1/ref/reference/multiRouter.MultiRoute.xml
+             * @see https://api.yandex.ru/maps/doc/jsapi/2.1/ref/reference/multiRouter.MultiRouteModel.xml
+             */
+            var adresses = [
+                "Оренбург, ул. Чкалова д 2 кв 102",
+                "Оренбург, ул. Новая , д 12"
+                ];
+
+            var multiRoute = new ymaps.multiRouter.MultiRoute({
+                // Описание опорных точек мультимаршрута.
+                referencePoints: [
+                    "Оренбург, ул. Толстого д 6",
+                    "<?=  City::getCityNameById($request['id_city']).', '.$array_request['address']?>"
+                ],
+                // Параметры маршрутизации.
+                params: {
+                    // Ограничение на максимальное количество маршрутов, возвращаемое маршрутизатором.
+                    results: 2
+                }
+            }, {
+                // Автоматически устанавливать границы карты так, чтобы маршрут был виден целиком.
+                boundsAutoApply: true
+            });
+
+            // Создаем карту с добавленными на нее кнопками.
+            var myMap = new ymaps.Map('map', {
+                center: [55.750625, 37.626],
+                zoom: 7,
+            }, {
+                buttonMaxWidth: 300
+            });
+
+            // К моменту попытки запросить маршруты маршрут не построился
+            // var a = multiRoute.model.getRoutes();
+            // Можно подписаться на событие успешного построения маршрута и когда маршрут построен получить результат
+            multiRoute.model.events.add("requestsuccess", function(){
+                //var a = multiRoute.model.getRoutes();
+                console.log(multiRoute.getRoutes().get(0).properties.get('distance'));
+            });
+
+            // Добавляем мультимаршрут на карту.
+            myMap.geoObjects.add(multiRoute);
+        }
 
 
+</script>
 </div>

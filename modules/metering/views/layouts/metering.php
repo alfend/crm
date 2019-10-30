@@ -3,6 +3,8 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
+
+
 use app\widgets\Alert;
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
@@ -13,7 +15,7 @@ use yii\widgets\Menu;
 use app\models\User;
 
 //Если не замерщик перенаправляем на главную
-if(!(User::getRole(Yii::$app->user->getId())==User::TYPE_METERING)){
+if((Yii::$app->user->isGuest)or!(User::getRole(Yii::$app->user->getId())==User::TYPE_METERING)){
     Yii::$app->getResponse()->redirect(Yii::$app->getUser()->loginUrl);
 }
 
@@ -34,8 +36,12 @@ if(\Yii::$app->mobileDetect->isMobile() or \Yii::$app->mobileDetect->isTablet())
         <?php $this->registerCsrfMetaTags() ?>
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
+
+        <script src="https://api-maps.yandex.ru/2.1/?apikey=c428abb7-ad0d-41cf-84cd-59f900d74c5b&lang=ru_RU" type="text/javascript">
+        </script>
+
     </head>
-    <body style="background-image: url('/web/uploads/images/mobile/background.jpg'); background-repeat: no-repeat" >
+    <body style="background-image: url('../web/uploads/images/mobile/background.jpg'); background-repeat: no-repeat" >
     <?php //убрать  background в css
     $this->beginBody();
     ///web/uploads/images/mobile/background.jpg
@@ -174,6 +180,11 @@ if(\Yii::$app->mobileDetect->isDesktop()) {
         <?php $this->registerCsrfMetaTags() ?>
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
+        <script src="https://api-maps.yandex.ru/2.1/?apikey=c428abb7-ad0d-41cf-84cd-59f900d74c5b&lang=ru_RU" type="text/javascript">
+        </script>
+
+
+
     </head>
     <body>
     <?php $this->beginBody() ?>

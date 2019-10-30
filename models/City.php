@@ -60,6 +60,11 @@ class City extends \yii\db\ActiveRecord
         return static::findOne(['id' => $id]); //, 'status' => self::STATUS_ACTIVE]
     }
 
+    public static function getCityNameById($id)
+    {
+        return static::findOne(['id' => $id])->name; //, 'status' => self::STATUS_ACTIVE]
+    }
+
     public function getAllCity()
     {
         return static::find('id','name')->all(); //, 'status' => self::STATUS_ACTIVE]
