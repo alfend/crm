@@ -1,0 +1,47 @@
+@import "../../shared/variables";
+@import "../../shared/mixin/px-to-rem";
+
+.irs {
+	&--round  {
+		.irs-from, .irs-to, .irs-max, .irs-min {
+			display: none;
+		}
+		
+		.irs-handle {
+			top: 0;
+			background-color: #1c0030;
+			border-color: #1c0030;
+			cursor: pointer;
+			
+			&:hover, &.state_hover {
+				background-color: #1c0030;
+			}
+		}
+		
+		.irs-bar, .irs-line {
+			top: rem(11);
+			background-color: #2f3441;
+		}
+		
+		.irs-line, .irs-bar {
+			border-radius: rem(1);
+			height: rem(2);
+		}
+		
+		.irs-single {
+			background-color: transparent;
+			color: $dark;
+			font-family: $font-main;
+			font-size: rem(15);
+			font-weight: 600;
+			line-height: 1;
+			letter-spacing: rem(1.76);
+			border-radius: 0;
+			top: rem(30);
+			
+			&::before {
+				display: none;
+			}
+		}
+	}
+}

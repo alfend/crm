@@ -7,6 +7,7 @@ use yii\web\Controller;
 use app\models\Response;
 use app\models\User;
 use yii\helpers\Html;
+use app\models\Request;
 
 /**
  * Default controller for the `metering` module
@@ -29,7 +30,13 @@ class DefaultController extends Controller
 
     public function actionMyRequest()
     {
-        return $this->render('myRequest');
+
+        $request = new Request();
+        $array_request = $request->getRequestByWorkerAndStatusMetering( Yii::$app->user->getId(), [$request::STATUS_METERING_RUN,$request::STATUS_METERING_AFTER,$request::STATUS_COMPANY_BEFORE]);
+
+        return $this->render('myRequest', ['array_request' => $array_request]);
+
+        //'pjax_example', ['time' => date('H:i:s')]
     }
 
     public function actionMyResponse()
@@ -92,4 +99,12 @@ class DefaultController extends Controller
         ]);
 
     }
+
+    public function actionPjaxExample()
+    {
+        return $this->render('pjax_example', [
+            'time' => date('H:i:s'),
+        ]);
+    }
+
 }

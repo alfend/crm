@@ -1,0 +1,158 @@
+@import "shared/variables";
+@import "shared/mixin/px-to-rem";
+
+/* Helper classes */
+.cf:before,
+.cf:after {
+	content: ' ';
+	display: table;
+}
+
+.cf:after {
+	clear: both;
+}
+
+/* Main styles */
+body {
+	font-family: 'Montserrat', 'Avenir Next', Avenir, 'Helvetica Neue', 'Lato', 'Segoe UI', Helvetica, Arial, sans-serif;
+	overflow-y: auto;
+	overflow-x: hidden;
+	margin: 0;
+	color: $dark;
+	background-color: $contrast;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+a {
+	color: $primary;
+	
+	svg {
+		transition: fill .15s ease;
+	}
+	
+	&:hover {
+		color: darken($primary, 10%);
+		text-decoration: none;
+		
+		svg {
+			fill: darken($primary, 15%);
+		}
+	}
+}
+
+#cdawrap {
+	top: auto;
+	bottom: 15px;
+	background-color: rgba($dark, 0.1);
+	
+	.carbon-text {
+		color: #505158;
+	}
+	
+	a {
+		text-decoration: none;
+		color: $contrast;
+		outline: none;
+		
+		&:hover {
+			color: #ddd;
+		}
+	}
+	
+	a {
+		&:hover {
+			.carbon-poweredby {
+				color: $contrast;
+			}
+		}
+		
+		&.carbon-poweredby {
+			color: #7883c4;
+		}
+	}
+}
+
+.content {
+	position: relative;
+	min-height: 300px;
+	margin: 0 0 0 300px;
+	color: #cecece;
+	
+	&--loading {
+		background: url(../img/svg/loading.svg) no-repeat 50% 50%;
+	}
+}
+
+.products {
+	margin: 0;
+	padding: 2em;
+	text-align: center;
+}
+
+.product {
+	display: inline-block;
+	width: 200px;
+	height: 200px;
+	margin: 10px;
+	border-radius: 5px;
+	background: #1c1d22;
+	
+	.foodicon {
+		font-size: 4em;
+		line-height: 190px;
+		color: #3b3d4a;
+	}
+}
+
+.info {
+	font-size: 1.1em;
+	font-weight: bold;
+	padding: 20vh 1em 0;
+	text-align: center;
+	color: #47484c;
+}
+
+//@media screen and (max-width: 767px) {
+.content {
+	margin: 0;
+}
+//body,
+//.wrap-container {
+//	height: auto;
+//	overflow: auto;
+//}
+//}
+
+.sec-inner {
+	background-image: url(../img/general/bg-menu.png);
+	background-position: 50% 0;
+	background-size: cover;
+	background-repeat: no-repeat;
+	padding-top: rem(109);
+	padding-bottom: rem(140);
+	min-height: 100vh;
+}
+
+.sec-header {
+	background-image: url(../img/general/bg-screen.png);
+	background-position: 50% 0;
+	background-size: cover;
+	background-repeat: no-repeat;
+	padding-top: rem(109);
+	padding-bottom: rem(140);
+	
+	.container-sm {
+		max-width: 570px;
+	}
+}
+
+.sec-negative {
+	margin-top: rem(-120);
+	//margin-bottom: rem(25);
+}
+
+.sec-main {
+	padding-bottom: rem(104);
+	background-color: $contrast;
+}

@@ -1,0 +1,36 @@
+@import "../shared/variables";
+@import "../shared/mixin/px-to-rem";
+
+.list-items {
+	display: flex;
+	flex-direction: column;
+	max-width: 400px;
+	width: 100%;
+	margin: auto;
+}
+
+.list-item {
+	padding: rem(20, 15);
+	box-shadow: 0 0 24px rgba($secondary, .1);
+	border-radius: 10px;
+	background-color: $contrast;
+	font-size: rem(13);
+	
+	& + & {
+		margin-top: rem(15);
+	}
+	
+	img {
+		width: rem(70);
+		height: rem(70);
+		
+		@media screen and (max-width: 375px){
+			width: rem(60);
+			height: rem(60);
+		}
+	}
+	
+	.row {
+		flex-wrap: nowrap;
+	}
+}

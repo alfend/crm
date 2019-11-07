@@ -1,0 +1,68 @@
+@import "../../shared/variables";
+@import "../../shared/mixin/px-to-rem";
+
+.btn {
+	border-radius: rem(12);
+	padding-left: rem(25);
+	padding-right: rem(25);
+	
+	&-primary {
+		background-color: $primary;
+		border: $primary;
+		
+		&:focus {
+			box-shadow: 0 0 0 0.2rem rgba($primary,.5);
+		}
+		
+		&:hover {
+			background-color: darken($primary, 10%);
+			border-color: darken($primary, 10%);
+		}
+		
+		&:not(:disabled):not(.disabled):active,
+		&:not(:disabled):not(.disabled).active {
+			background-color: darken($primary, 5%);
+			border-color: darken($primary, 5%);
+			
+			&:focus {
+				box-shadow: 0 0 0 0.2rem rgba($primary,.5);
+			}
+		}
+	}
+	
+	&-menu {
+		width: rem(50);
+		
+		&:hover {
+			span:not(:nth-child(1)) {
+				width: 100% !important;
+			}
+		}
+		
+		span {
+			display: block;
+			border-radius: rem(4);
+			background-color: $dark;
+			height: rem(6);
+			transition: width .15s ease;
+			
+			& + span {
+				margin-top: rem(6);
+			}
+			
+			&:nth-child(1) {
+				width: 100%;
+			}
+			&:nth-child(2) {
+				width: 80%;
+			}
+			&:nth-child(3) {
+				width: 60%;
+			}
+		}
+	}
+	
+	&-long {
+		min-width: rem(265);
+	}
+}

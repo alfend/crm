@@ -1,0 +1,100 @@
+@import "../../shared/variables";
+@import "../../shared/mixin/px-to-rem";
+
+.range-calendar {
+	.months {
+		.cell {
+			font-size: rem(16);
+			font-weight: 600;
+			line-height: 1;
+			letter-spacing: rem(-.68);
+			transition: color .15s ease, background-color .15s ease;
+			
+			&::after {
+				position: absolute;
+				content: '';
+				top: 100%;
+				left: 0;
+				right: 0;
+				z-index: 1;
+				height: 1px;
+				background-color: transparent;
+				pointer-events: none;
+				transition: background-color .15s ease;
+			}
+			
+			.bullet {
+				left: rem(10);
+				top: rem(12);
+				border-radius: 50%;
+				transition: background-color .15s ease;
+			}
+			
+			&.current {
+				color: $dark;
+			}
+			
+			&.selected {
+				background-color: transparent;
+				color: $dark;
+				
+				&::after {
+					background-color: $dark;
+				}
+				
+				.bullet {
+					background-color: $dark;
+				}
+				
+				.date-formatted {
+					color: inherit;
+					
+					.month-name {
+						color: inherit;
+					}
+				}
+			}
+		}
+	}
+		
+	.calendar {
+		.cell {
+			transition: color .15s ease;
+			
+			.cell-content {
+				display: flex;
+				flex-direction: column-reverse;
+				align-items: center;
+				transition: bottom .15s ease;
+			}
+			.day-number {
+				font-size: rem(15);
+				font-weight: 600;
+				line-height: 1;
+				letter-spacing: rem(1.26);
+			}
+			
+			.day {
+				margin-bottom: rem(5);
+				text-transform: initial;
+				font-size: rem(15);
+				font-weight: 600;
+				line-height: 1;
+				letter-spacing: rem(-.66);
+			}
+			
+			&.selected {
+				color: $dark;
+				
+				.cell-content {
+					position: relative;
+					bottom: rem(3);
+				}
+				
+				.range-bar{
+					background-color: transparent;
+				}
+			}
+		}
+	}
+}

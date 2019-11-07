@@ -1,0 +1,24 @@
+@import "../shared/variables";
+@import "../shared/mixin/px-to-rem";
+
+.calendar {
+	
+	&__date {
+	
+	}
+	
+	&__time {
+	
+	}
+	
+	&__order {
+		margin-bottom: rem(35);
+		p {
+			margin-bottom: 0;
+		}
+	}
+	
+	&__footer {
+		text-align: center;
+	}
+}

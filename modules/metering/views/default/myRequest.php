@@ -6,6 +6,7 @@ use app\models\Request;
 use app\models\City;
 use app\models\User;
 use app\models\DataMetering;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\RequestSearch */
@@ -16,12 +17,28 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="request-index">
 
-    <?php
 
+
+
+
+
+<?php
     //Список заказов на замер
-    $request = new Request();
-    $array_request = $request->getRequestByWorkerAndStatusMetering( Yii::$app->user->getId(), [$request::STATUS_METERING_RUN,$request::STATUS_METERING_AFTER,$request::STATUS_COMPANY_BEFORE]);
 
+$script = <<< JS
+$(document).ready(function() {
+    setInterval(function(){
+        $('#refreshButton').click();
+    }, 1000);
+});
+JS;
+$this->registerJs($script);
+?>
+    <?php Pjax::begin(); ?>
+
+    <?= Html::a('Обновить',['default/my-request'], ['class' => 'btn btn-lg btn-primary hidden', 'id' => 'refreshButton']);?>
+
+    <?php
     //Новые заказы', ['/metering/default/new-request']));
     if(\Yii::$app->mobileDetect->isMobile() or \Yii::$app->mobileDetect->isTablet()) {
         //для телефона
@@ -81,6 +98,7 @@ $this->params['breadcrumbs'][] = $this->title;
     }
 
      ?>
+    <?php Pjax::end(); ?>
 
     <!-- Яндекс карта -->
     <div id="map" style="width: 100%; height: 300px"></div>
@@ -106,7 +124,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 // Описание опорных точек мультимаршрута.
                 referencePoints: [
                     "Оренбург, ул. Толстого д 6",
-                    "<?=  City::getCityNameById($request['id_city']).', '.$array_request['address']?>"
+                    "Оренбург, ул. Толстого д 8"
+                    <?php
+                    /*<?=  City::getCityNameById($request['id_city']).', '.$array_request['address'] ?>*/
+                    ?>
+
                 ],
                 // Параметры маршрутизации.
                 params: {
@@ -140,4 +162,27 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 </script>
+
+    <!-- AJAX
+    var ob = {
+    'id':3
+    }
+
+    $(".for_button").click(function() {
+    $.ajax({
+
+    type:'POST',
+    url:'index.php',
+    dataType:'json',
+    data:"param="+JSON.stringify(ob),
+    success:function(html) {
+    $("<p class='for_content'>" + html['title'] + "</p>").
+    prependTo(".content").
+    hide().
+    fadeIn(500);
+    }
+    });
+
+    });
+    -->
 </div>

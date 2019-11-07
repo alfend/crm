@@ -1,0 +1,40 @@
+@import "../shared/variables";
+@import "../shared/mixin/px-to-rem";
+
+.breadcrumbs {
+	ul {
+		display: flex;
+		flex-wrap: nowrap;
+		
+		li {
+			position: relative;
+			
+			&:not(:last-child) {
+				padding-right: rem(15);
+				margin-right: rem(5);
+				
+				&::after {
+					position: absolute;
+					top: 50%;
+					transform: translateY(-50%);
+					right: 0;
+					content: '/';
+					font-size: rem(15);
+					font-weight: 600;
+					line-height: 2.5;
+					text-transform: uppercase;
+					letter-spacing: rem(-.85);
+				}
+			}
+			
+			a, span {
+				white-space: nowrap;
+				font-size: rem(15);
+				font-weight: 600;
+				line-height: 2.5;
+				text-transform: uppercase;
+				letter-spacing: rem(-.85);
+			}
+		}
+	}
+}

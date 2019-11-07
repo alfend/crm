@@ -1,0 +1,31 @@
+@import "../shared/variables";
+@import "../shared/mixin/px-to-rem";
+
+.card {
+	max-width: 400px;
+	width: 100%;
+	margin: auto;
+	box-shadow: 1px 2px 1px .5px rgba($secondary, .35);
+	border-radius: rem(20);
+	
+	&-subtitle {
+		margin-bottom: rem(5);
+		font-size: rem(15);
+		font-weight: 700;
+		line-height: 1.2;
+	}
+	
+	&-number {
+		margin-bottom: rem(10);
+		font-size: rem(29);
+		line-height: 1.2;
+		letter-spacing: rem(-.435);
+		font-weight: 700;
+	}
+	
+	&-logo {
+		margin: rem(-70) auto 0;
+		width: rem(103.5);
+		height: rem(103.5);
+	}
+}

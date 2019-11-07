@@ -5,6 +5,7 @@ use yii\grid\GridView;
 use app\models\Request;
 use app\models\User;
 use app\models\Response;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\RequestSearch */
@@ -14,6 +15,13 @@ $this->title = 'Заказы на замер';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="request-index">
+
+    <?php Pjax::begin();
+    //обновление данных
+    ?>
+
+
+    <?= Html::a("Обновить", ['default/my-request'], ['class' => 'btn btn-lg btn-primary' , 'id' => 'refreshButton']) ?>
 
     <?php
 
@@ -81,6 +89,25 @@ $this->params['breadcrumbs'][] = $this->title;
         print('</table>');
     }
 
+    $this->registerJs(
+        '$(document).load(function() {
+    setInterval(function(){ $("#refreshButton").trigger("click"); }, 3000);
+    });'
+    );
+?>
+<?php
+$script = <<< JS
+$(document).ready(function() {
+    setInterval(function(){ $("#refreshButton").click(); }, 3000);
+});
+JS;
+$this->registerJs($script);
+?>
+    <?php
+
+    Pjax::end();
     ?>
+
+
 
 </div>

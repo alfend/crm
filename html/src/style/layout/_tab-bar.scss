@@ -1,0 +1,67 @@
+@import "../shared/variables";
+@import "../shared/mixin/px-to-rem";
+
+.tab-bar {
+	box-shadow: 0 0 79px rgba($secondary, .19);
+	background-color: $contrast;
+	
+	.container {
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: nowrap;
+	}
+	
+	&-bottom {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		z-index: 99;
+	}
+	
+	&__btn {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		padding: rem(15, 5);
+		
+		&::before {
+			position: absolute;
+			content: '';
+			left: 0;
+			right: 0;
+			top: 0;
+			z-index: 1;
+			height: 0;
+			background-color: $primary;
+			transition: height .15s ease;
+		}
+		
+		&.active {
+			&::before {
+				height: rem(3.5);
+			}
+		}
+	}
+	
+	&__label {
+		display: block;
+		margin-bottom: rem(13);
+		color: $dark;
+		font-family: $font-main;
+		font-size: rem(11);
+		font-weight: 600;
+		line-height: 1;
+		text-transform: uppercase;
+		letter-spacing: rem(-.575);
+		white-space: nowrap;
+		
+		@media screen and (max-width: 375px){
+			font-size: rem(10);
+		}
+	}
+}
+
+

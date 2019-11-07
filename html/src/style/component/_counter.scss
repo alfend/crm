@@ -1,0 +1,42 @@
+@import "../shared/variables";
+@import "../shared/mixin/px-to-rem";
+
+.counters {
+	display: flex;
+}
+.counter {
+	flex: 1;
+	
+	&__text {
+		display: block;
+		color: $dark;
+		font-family: $font-main;
+		font-size: rem(14);
+		font-weight: 500;
+		line-height: 1;
+		text-transform: uppercase;
+		letter-spacing: rem(-1.7);
+		text-align: center;
+	}
+	
+	&__figure {
+		margin: 0;
+		
+		.timer {
+			color: $dark;
+			font-family: $font-main;
+			//font-size: rem(24) !important;
+			font-weight: 500;
+			line-height: 1;
+			letter-spacing: rem(-0.83);
+		}
+		
+		.number {
+			font-weight: 700;
+		}
+	}
+	
+	&__number {
+	
+	}
+}
