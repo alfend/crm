@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
     ?>
 
 
-    <?= Html::a("Обновить", ['default/my-request'], ['class' => 'btn btn-lg btn-primary' , 'id' => 'refreshButton']) ?>
+    <?= Html::a("Обновить", ['default/my-request'], ['class' => 'btn btn-lg btn-primary hidden' , 'id' => 'refreshButton']) ?>
 
     <?php
 

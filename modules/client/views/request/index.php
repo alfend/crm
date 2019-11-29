@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
 use app\models\User;
 use app\models\Request;
 use app\models\Response;
@@ -17,14 +16,16 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?php //Html::a('Запись на замер', ['create'], ['class' => 'btn btn-success']); ?>
-    </p>
-
     <?php
 
     $request_client = new Request();
-    $array_request_client = $request_client->getRequestByClientAndStatus( Yii::$app->user->getId(), [$request_client::STATUS_CREATE,$request_client::STATUS_METERING_BEFORE]);
+    $array_request_client = $request_client->getRequestByClientAndStatus( Yii::$app->user->getId(), [$request_client::STATUS_CREATE,$request_client::STATUS_METERING_BEFORE,
+        $request_client::STATUS_METERING_RUN,$request_client::STATUS_METERING_AFTER,
+        $request_client::STATUS_COMPANY_BEFORE,$request_client::STATUS_COMPANY_RUN,
+        $request_client::STATUS_COMPANY_AFTER,$request_client::STATUS_DELIVERY_BEFORE,$request_client::STATUS_DELIVERY_RUN,$request_client::STATUS_DELIVERY_AFTER,
+        $request_client::STATUS_MOUNTING_BEFORE,$request_client::STATUS_MOUNTING_RUN,$request_client::STATUS_MOUNTING_AFTER,
+        $request_client::STATUS_FINISH]);
+
 
     print('<h4> Заказы на замер </h4> <table border="1" width="100%"> <tr><th> Дата создания </th><th> Адрес </th><th> Дата замера </th><th></th></tr>');
     foreach ($array_request_client as $request){

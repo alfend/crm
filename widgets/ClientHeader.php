@@ -1,14 +1,40 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: Гейдебрехт ПВ
+ * Date: 29.11.2019
+ * Time: 11:49
+ */
+namespace app\widgets;
 
-use yii\helpers\Html;
+use Yii;
 use app\models\Request;
 use yii\widgets\Pjax;
-?>
+
+class ClientHeader extends \yii\bootstrap\Widget
+{
+
+public function init()
+{
+
+}
+
+public function run()
+{
+
+$request_array = new Request();
+$request_array = $request_array->getRequestByClientAndStatus( Yii::$app->user->getId(), [
+Request::STATUS_CREATE,Request::STATUS_METERING_BEFORE,
+Request::STATUS_METERING_RUN,Request::STATUS_METERING_AFTER,
+Request::STATUS_COMPANY_BEFORE,Request::STATUS_COMPANY_RUN,
+Request::STATUS_COMPANY_AFTER,Request::STATUS_DELIVERY_BEFORE,Request::STATUS_DELIVERY_RUN,Request::STATUS_DELIVERY_AFTER,
+Request::STATUS_MOUNTING_BEFORE,Request::STATUS_MOUNTING_RUN,Request::STATUS_MOUNTING_AFTER,
+Request::STATUS_FINISH]);
 
 
-<?php
+
 //Список заказов на замер
-
+/*
 $script = <<< JS
 $(document).ready(function() {
     setInterval(function(){
@@ -17,15 +43,13 @@ $(document).ready(function() {
 });
 JS;
 $this->registerJs($script);
-?>
+*/
+Pjax::begin();
 
-<?php Pjax::begin(); ?>
-
-<?php
 //кол-во заявок
 $count_request=0;
 //кол-во замеров
-$count_request_metering=0;
+$count_request_array=0;
 //кол-во заказов
 $count_request_zakaz=0;
 //кол-во сообщений
@@ -41,18 +65,17 @@ $balance=0;
 
 $array_request = new Request();
 
-foreach ($request_client as $request){
+foreach ($request_array as $request){
     $count_request++;
     if(in_array($request['status_request'], array($array_request::STATUS_METERING_BEFORE,$array_request::STATUS_METERING_RUN)))
     {
-        $count_request_metering++;
+        $count_request_array++;
     };
 
-    if(in_array($request['status_request'], array(
+    if(in_array($request['status_request'], array($array_request::STATUS_METERING_AFTER,
         $array_request::STATUS_COMPANY_BEFORE,$array_request::STATUS_COMPANY_RUN,
         $array_request::STATUS_COMPANY_AFTER,$array_request::STATUS_DELIVERY_BEFORE,$array_request::STATUS_DELIVERY_RUN,$array_request::STATUS_DELIVERY_AFTER,
-        $array_request::STATUS_MOUNTING_BEFORE,$array_request::STATUS_MOUNTING_RUN,$array_request::STATUS_MOUNTING_AFTER,
-        $array_request::STATUS_FINISH)))
+        $array_request::STATUS_MOUNTING_BEFORE,$array_request::STATUS_MOUNTING_RUN,$array_request::STATUS_MOUNTING_AFTER)))
     {
         $count_request_zakaz++;
     };
@@ -64,7 +87,7 @@ if($count_request==0)
     $procent_metering=100;
     $procent_zakaz=100;
 } else {
-    $procent_metering=$count_request_metering/$count_request*100;
+    $procent_metering=$count_request_array/$count_request*100;
     $procent_zakaz=$count_request_zakaz/$count_request*100;
 }
 if($count_message==0)
@@ -90,19 +113,13 @@ if($count_task==0)
             <div class="col-3 pb-1">
                 <h6 class="color-dark text-uppercase text-center">Замеров</h6>
                 <div class="counter m-2">
-                    <?= //Html::a('Обновить',['/client'], ['class' => 'btn btn-lg btn-primary hidden', 'id' => 'refreshButton']);/* ,'style' => "display:none" */
-                    '';
-                    ?>
-
                     <svg class="counter__circle" viewBox="0 0 35 35" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="position:absolute;">
                         <circle class="counter__background" stroke="transparent" stroke-width="1" fill="none" stroke-linecap="round" stroke-dasharray="100,100" cx="17.5" cy="17.5" r="15.91549431"/>
                         <circle class="counter__circle-value" stroke="#000000" stroke-width="1" stroke-dasharray="<?= $procent_metering; ?>, 100" stroke-dashoffset="<?= $procent_metering; ?>" stroke-linecap="round" fill="none" cx="17.5" cy="17.5" r="15.91549431" />
                     </svg>
-                    <div class="counter__value"><span><?= $count_request_metering; ?></span></div>
+                    <div class="counter__value"><span><?= $count_request_array; ?></span></div>
                 </div>
-                <!-- /.counter -->
             </div>
-            <!-- /.col -->
 
             <div class="col-3 pb-1">
                 <h6 class="color-dark text-uppercase text-center">Заказов</h6>
@@ -114,13 +131,10 @@ if($count_task==0)
                     </svg>
                     <div class="counter__value"><span><?= $count_request_zakaz; ?></span></div>
                 </div>
-                <!-- /.counter -->
             </div>
-            <!-- /.col -->
 
             <div class="col-3 pb-1">
                 <h6 class="color-dark text-uppercase text-center">Писем</h6>
-
                 <div class="counter m-2">
                     <svg class="counter__circle" viewBox="0 0 35 35" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="position:absolute;">
                         <circle class="counter__background" stroke="transparent" stroke-width="1" fill="none" stroke-linecap="round" stroke-dasharray="100,100" cx="17.5" cy="17.5" r="15.91549431"/>
@@ -128,9 +142,7 @@ if($count_task==0)
                     </svg>
                     <div class="counter__value"><span><?= $count_message_not_read; ?></span></div>
                 </div>
-                <!-- /.counter -->
             </div>
-            <!-- /.col -->
 
             <div class="col-3 pb-1">
                 <h6 class="color-dark text-uppercase text-center">Задач</h6>
@@ -143,33 +155,18 @@ if($count_task==0)
 
                     <div class="counter__value"><span><?= $count_task_not_read; ?></span></div>
                 </div>
-                <!-- /.counter -->
-
             </div>
-            <!-- /.col -->
-
         </div>
-        <!-- /.row -->
-
     </div>
-    <!-- /.container -->
-
 </section>
-<!-- /.sec-header -->
 
-<?php Pjax::end(); ?>
+
 <section class="sec sec-negative">
-
     <div class="container container-xs px-0">
-
         <div class="card">
-
             <div class="card-body">
-
                 <div class="media">
-
                     <div class="media-body">
-
                         <div class="row flex-nowrap">
 
                             <div class="col-auto">
@@ -179,128 +176,23 @@ if($count_task==0)
                                 <p class="card-number"><b><?= $count_request_zakaz; ?></b></p>
                                 <a href="#" class="btn btn-sm btn-primary">выполнить</a>
                             </div>
-                            <!-- /.col -->
 
                             <div class="col">
-
                                 <form novalidate class="form card-switcher text-right">
-
-                                        		<span class="switch switch-sm">
-                                    <input type="checkbox" class="switch" id="switch-sm" checked>
+                                    <span class="switch switch-sm">
+                                        <input type="checkbox" class="switch" id="switch-sm" checked>
                                     <label for="switch-sm"></label>
                                   </span>
-                                    <!-- /.switch -->
-
                                 </form>
-                                <!-- /.form -->
-
                                 <div class="chart card-chart ml-auto mr-auto mt-n3" id="chart"></div>
-                                <!-- /.chart -->
-
                             </div>
-                            <!-- /.col-auto -->
-
                         </div>
-                        <!-- /.row -->
-
                     </div>
-                    <!-- /.media-body -->
-
                 </div>
-                <!-- /.media -->
-
             </div>
-            <!-- /.card-body -->
-
         </div>
-        <!-- /.card -->
-
     </div>
-    <!-- /.container -->
-
 </section>
-<!-- /.sec-negative -->
-
-
-<section class="sec sec-main">
-
-    <div class="container container-xs px-0">
-
-        <ul class="list-items">
-
-            <li class="list-item">
-                <div class="row">
-                    <div class="col-auto d-flex align-items-center">
-                        <object type="image/svg+xml" data="/web/img/svg/pencil.svg" class="svg-icon"></object>
-                    </div>
-                    <div class="col d-flex flex-column justify-content-center py-1">
-                        <h5 class="mb-1 text-uppercase">Мои Замеры</h5>
-                        <div class="row">
-                            <div class="col-6 col-sm-5"><span class="text-nowrap font-weight-bold">Оформлено: <a href=""><?= $count_request_metering; ?></a></span></div>
-                            <div class="col-6 col-sm-5"><span class="text-nowrap font-weight-bold">В работе: <a href=""><?= $count_request_metering; ?></a></span></div>
-                        </div>
-                    </div>
-                    <div class="col-auto d-flex align-items-center">
-                        <a href="">
-                            <svg class="svg-menu-dots" width="3" height="19">
-                                <use xlink:href="/web/img/svg/sprite.svg#menu-dots"></use>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-            </li>
-            <!-- /.list-item	-->
-
-            <li class="list-item">
-                <div class="row">
-                    <div class="col-auto d-flex align-items-center">
-                        <object type="image/svg+xml" data="/web/img/svg/task.svg" class="svg-icon"></object>
-                    </div>
-                    <div class="col d-flex flex-column justify-content-center py-1">
-                        <h5 class="mb-1 text-uppercase">Мои заказы</h5>
-                        <div class="row">
-                            <div class="col-6 col-sm-5"><span class="text-nowrap font-weight-bold">Оформлено: <a href=""><?= $count_request_zakaz; ?></a></span></div>
-                            <div class="col-6 col-sm-5"><span class="text-nowrap font-weight-bold">В работе: <a href=""><?= $count_request_zakaz; ?></a></span></div>
-                        </div>
-                    </div>
-                    <div class="col-auto d-flex align-items-center">
-                        <a href="">
-                            <svg class="svg-menu-dots" width="3" height="19">
-                                <use xlink:href="/web/img/svg/sprite.svg#menu-dots"></use>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-            </li>
-            <!-- /.list-item	-->
-
-            <li class="list-item">
-                <div class="row">
-                    <div class="col-auto d-flex align-items-center">
-                        <object type="image/svg+xml" data="/web/img/svg/notification.svg" class="svg-icon"></object>
-                    </div>
-                    <div class="col d-flex flex-column justify-content-center py-1">
-                        <h5 class="mb-1 text-uppercase">Уведомления</h5>
-                        <div class="row">
-                            <div class="col-6 col-sm-5"><span class="text-nowrap font-weight-bold">Не прочитано: <a href=""><?= $count_message_not_read; ?></a></span></div>
-                        </div>
-                    </div>
-                    <div class="col-auto d-flex align-items-center">
-                        <a href="">
-                            <svg class="svg-menu-dots" width="3" height="19">
-                                <use xlink:href="/web/img/svg/sprite.svg#menu-dots"></use>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-            </li>
-            <!-- /.list-item	-->
-
-        </ul>
-        <!-- /.list-items -->
-
-    </div>
-    <!-- /.container -->
-
-</section>
-<!-- /.sec-main -->
+<?php
+    }
+}

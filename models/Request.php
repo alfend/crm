@@ -65,8 +65,8 @@ class Request extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_client', 'date_create', 'address', 'date_metering_plan', 'status_request'], 'required'],
-            [['id_client','id_city', 'id_metering', 'id_delivery', 'price_delivery', 'id_mounting', 'price_mounting', 'type_price', 'id_company', 'type_deposit', 'status_price', 'status_request'], 'integer'],
+            [['id_client', 'date_create', 'address', 'date_metering_plan', 'status_request'], 'required' , 'message' => 'Обязательное поле.'],
+            [['id_client','id_city', 'id_metering', 'id_delivery', 'price_delivery', 'id_mounting', 'price_mounting', 'type_price', 'id_company', 'type_deposit', 'status_price', 'status_request'], 'integer' , 'message' => 'Число.'],
             [['date_create', 'date_metering_plan', 'date_metering'], 'safe'], //,'date' , 'format'=>'Y-m-d'
             [['comment_request'], 'string'],
             [['price_company', 'price_request', 'deposit_transfer', 'deposit_cash'], 'number'],

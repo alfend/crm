@@ -48,7 +48,7 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup(User::TYPE_CLIENT)) {
                 if (Yii::$app->getUser()->login($user)) {
-                    return $this->redirect(['/client/request']);
+                    return $this->redirect(['/client']);
                 }
             }
         }
@@ -205,7 +205,7 @@ class SiteController extends Controller
            // return $this->goBack();
 
             if (Yii::$app->user->identity->type == User::TYPE_CLIENT) {
-                return $this->redirect(['/client/request']);
+                return $this->redirect(['/client']);
             }
 
             if (Yii::$app->user->identity->type == User::TYPE_METERING) {

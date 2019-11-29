@@ -70,9 +70,18 @@ class RequestController extends Controller
             return $this->redirect(['index']);
         }
 
+        $request_metering = new Request();
+        $request_metering = $request_metering->getRequestByClientAndStatus( Yii::$app->user->getId(), [
+            Request::STATUS_CREATE,Request::STATUS_METERING_BEFORE,
+            Request::STATUS_METERING_RUN,Request::STATUS_METERING_AFTER,
+            Request::STATUS_COMPANY_BEFORE,Request::STATUS_COMPANY_RUN,
+            Request::STATUS_COMPANY_AFTER,Request::STATUS_DELIVERY_BEFORE,Request::STATUS_DELIVERY_RUN,Request::STATUS_DELIVERY_AFTER,
+            Request::STATUS_MOUNTING_BEFORE,Request::STATUS_MOUNTING_RUN,Request::STATUS_MOUNTING_AFTER,
+            Request::STATUS_FINISH]);
+
         return $this->render('create', [
-            'model' => $model,
-        ]);
+            'model' => $model, 'request_metering' => $request_metering]);
+
     }
 
     /**

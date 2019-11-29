@@ -20,7 +20,16 @@ class DefaultController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $request_client = new Request();
+        $request_client = $request_client->getRequestByClientAndStatus( Yii::$app->user->getId(), [
+            $request_client::STATUS_CREATE,$request_client::STATUS_METERING_BEFORE,
+            $request_client::STATUS_METERING_RUN,$request_client::STATUS_METERING_AFTER,
+            $request_client::STATUS_COMPANY_BEFORE,$request_client::STATUS_COMPANY_RUN,
+            $request_client::STATUS_COMPANY_AFTER,$request_client::STATUS_DELIVERY_BEFORE,$request_client::STATUS_DELIVERY_RUN,$request_client::STATUS_DELIVERY_AFTER,
+            $request_client::STATUS_MOUNTING_BEFORE,$request_client::STATUS_MOUNTING_RUN,$request_client::STATUS_MOUNTING_AFTER,
+            $request_client::STATUS_FINISH]);
+
+        return $this->render('index', ['request_client' => $request_client]);
     }
 
     public function actionNewRequest()
@@ -36,7 +45,6 @@ class DefaultController extends Controller
 
         return $this->render('myRequest', ['array_request' => $array_request]);
 
-        //'pjax_example', ['time' => date('H:i:s')]
     }
 
     public function actionMyResponse()
