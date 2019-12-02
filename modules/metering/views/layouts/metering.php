@@ -23,37 +23,38 @@ if((Yii::$app->user->isGuest)or!(User::getRole(Yii::$app->user->getId())==User::
 AppAsset::register($this);
 
 ?>
-<?php $this->beginPage() ?>
+<?php $this->beginPage();
+/*
+
+?>
 <!DOCTYPE html>
 <html lang="en" class="no-js">
 
 <!-- HEAD -->
+
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <?php $this->head() ?>
     <link rel="manifest" href="/web/js/manifest.json">
 
     <!-- FAVICON -->
     <link rel="shortcut icon" href="/web/img/favicon.ico">
     <!-- END FAVICON -->
 
-    <!-- BOOTSTRAP STYLE -->
-    <!--  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">-->
-    <!-- END BOOTSTRAP STYLE -->
-
+    <?php $this->registerCsrfMetaTags() ?>
+    <title><?= Html::encode($this->title) ?></title>
     <!-- MAIN STYLE -->
     <link rel="stylesheet" href="/web/css/main.css">
     <link rel="stylesheet" href="/web/css/site.css">
     <!-- END MAIN STYLE -->
 </head>
-<title>Home</title>
+
 <!-- END HEAD -->
 
-
-
 <body>
-
+<?php $this->beginBody() ?>
 <!-- PRELOADER -->
 <div class="preloader loading">
     <svg width="60" height="15">
@@ -309,10 +310,11 @@ AppAsset::register($this);
 <script src="/web/js/main.js"></script>
 
 </body>
-
+<?php $this->endBody() ?>
 </html>
+<?php $this->endPage() ?>
 <?php
-/*
+*/
 //Для телефона или планшета:
 if(\Yii::$app->mobileDetect->isMobile() or \Yii::$app->mobileDetect->isTablet()) {
     ?>
@@ -561,6 +563,6 @@ if(\Yii::$app->mobileDetect->isDesktop()) {
 
     <?php };
 $this->endPage();
-*/
+
 
 ?>

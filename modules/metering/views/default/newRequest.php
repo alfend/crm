@@ -50,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="media-left">
                         <img class="mr-3" src="/web/uploads/images/mobile/item-request.jpg" >
                     </div>    
-                    <div class="media-body">
+                    <div class="media-body">3
                         <b>Заказ №:</b>'.$request['id'].'</br>
                         <b>Адрес:</b>'.$request['address'].'</br>
                         <b>Дата замера:</b> '.$request['date_metering_plan'].'</br>
@@ -73,15 +73,17 @@ $this->params['breadcrumbs'][] = $this->title;
             $response = new Response();
             //если еще не откликался
             if (!$response->cheсkResponse($request['id'], Yii::$app->user->getId(), User::TYPE_METERING)) {
-                $button_res = Html::a('<span class="glyphicon glyphicon-arrow-right"></span>', ['/metering/default/create-response/'], [
+                $button_res = Html::a('ссылка <span class="glyphicon glyphicon-arrow-right"></span>', ['/metering/default/create-response/'], [
                     'data-method' => 'POST',
                     'data-params' => [
                         'id_request' => $request['id'],
                         'id_workers' => Yii::$app->user->getId(),
                         'type_workers' => User::TYPE_METERING,
-                        'date_workers' => $request['date_metering_plan']
+                        'date_workers' => $request['date_metering_plan'],
+                         'csrf_param' => Yii::$app->request->csrfParam,
+                        'csrf_token' => Yii::$app->request->csrfToken
                     ]
-                ], ['class' => 'btn btn-primary']);
+                ]);
                 print('<tr><td>' . $request['id'] . '</td>' . '<td>' . $request['address'] . '</td>' . '<td>' . $request['date_metering_plan'] . '</td><td>' . '500' . '</td><td>' . $button_res . '</td></tr>');
             }
         };
@@ -89,19 +91,17 @@ $this->params['breadcrumbs'][] = $this->title;
         print('</table>');
     }
 
-    $this->registerJs(
-        '$(document).load(function() {
-    setInterval(function(){ $("#refreshButton").trigger("click"); }, 3000);
-    });'
-    );
+
 ?>
 <?php
+    /*
 $script = <<< JS
 $(document).ready(function() {
     setInterval(function(){ $("#refreshButton").click(); }, 3000);
 });
 JS;
 $this->registerJs($script);
+    */
 ?>
     <?php
 

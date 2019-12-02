@@ -61,14 +61,14 @@ use app\models\City;
             <button type="button" class="btn btn-primary btn-block">Дата: <?= Yii::$app->request->POST('date'); ?> Время: <?= str_replace(';',':00 ', Yii::$app->request->POST('my_range')).':00'; ?></button>
 
             <span class="input-nao">
-                <?= $form->field($model, 'address', ['template' => "{input}\n{label}\n $svg \n{error}{hint}"])->textInput(['class' => 'input-nao__field valid'])->label('Укажите улицу',['class' => 'input-nao__label','for' =>"address"])?>
+                <?= $form->field($model, 'address_client_street', ['template' => "{input}\n{label}\n $svg \n{error}{hint}"])->textInput(['class' => 'input-nao__field valid'])->label('Укажите улицу',['class' => 'input-nao__label','for' =>"address"])?>
             </span>
         <span class="input-nao">
-                <?= $form->field($model, 'address', ['template' => "{input}\n{label}\n $svg \n{error}{hint}"])->textInput(['class' => 'input-nao__field valid'])->label('Укажите номер дома',['class' => 'input-nao__label','for' =>"address"])?>
+                <?= $form->field($model, 'address_client_house', ['template' => "{input}\n{label}\n $svg \n{error}{hint}"])->textInput(['class' => 'input-nao__field valid'])->label('Укажите номер дома',['class' => 'input-nao__label','for' =>"address"])?>
             </span>
 
         <span class="input-nao">
-                <?= $form->field($model, 'address', ['template' => "{input}\n{label}\n $svg \n{error}{hint}"])->textInput(['class' => 'input-nao__field valid'])->label('Укажите номер квартиры',['class' => 'input-nao__label','for' =>"address"])?>
+                <?= $form->field($model, 'address_client_room', ['template' => "{input}\n{label}\n $svg \n{error}{hint}"])->textInput(['class' => 'input-nao__field valid'])->label('Укажите номер квартиры',['class' => 'input-nao__label','for' =>"address"])?>
             </span>
 
 

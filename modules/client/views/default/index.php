@@ -48,11 +48,18 @@ foreach ($request_client as $request){
         $count_request_metering++;
     };
 
-    if(in_array($request['status_request'], array($array_request::STATUS_METERING_AFTER,
-        $array_request::STATUS_COMPANY_BEFORE,$array_request::STATUS_COMPANY_RUN,
-        $array_request::STATUS_COMPANY_AFTER,$array_request::STATUS_DELIVERY_BEFORE,$array_request::STATUS_DELIVERY_RUN,$array_request::STATUS_DELIVERY_AFTER,
-        $array_request::STATUS_MOUNTING_BEFORE,$array_request::STATUS_MOUNTING_RUN,$array_request::STATUS_MOUNTING_AFTER)))
-    {
+    if (in_array($request['status_request'], array(
+        $array_request::STATUS_METERING_AFTER,
+        $array_request::STATUS_COMPANY_BEFORE,
+        $array_request::STATUS_COMPANY_RUN,
+        $array_request::STATUS_COMPANY_AFTER,
+        $array_request::STATUS_DELIVERY_BEFORE,
+        $array_request::STATUS_DELIVERY_RUN,
+        $array_request::STATUS_DELIVERY_AFTER,
+        $array_request::STATUS_MOUNTING_BEFORE,
+        $array_request::STATUS_MOUNTING_RUN,
+        $array_request::STATUS_MOUNTING_AFTER
+    ))) {
         $count_request_zakaz++;
     };
 
@@ -152,3 +159,10 @@ foreach ($request_client as $request){
 
 </main>
 <!-- /.wrap-container -->
+<?php
+$this->registerJs(
+'$(document).load(function() {
+setInterval(function(){ $("#refreshButton").trigger("click"); }, 3000);
+});'
+);
+?>
