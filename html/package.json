@@ -5,7 +5,7 @@
 	"license": "MIT",
 	"dependencies": {
 		"bootstrap": "^4.3.1",
-		"jquery": "^3.3.1",
+		"jquery": "^3.5.0",
 		"jquery-nav-scroll": "^1.4.1",
 		"natives": "^1.1.6",
 		"parallax-js": "^3.1.0",
